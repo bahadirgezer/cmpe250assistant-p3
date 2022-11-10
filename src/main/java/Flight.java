@@ -9,6 +9,9 @@ public class Flight {
 
     Enter from new, exit from terminated.
 
+    ===== ACC =====
+
+    ACC scheduling ->
     ACC states:
             -new
             -ready
@@ -26,19 +29,25 @@ public class Flight {
     created -> new Flight input: adds the Flight into correct ACC ready queue
         ready: waiting for dispatch, in the correct ACC ready queue
 
-    dispatch -> get flight input and block ACC
+    dispatch -> start processing flight and block ACC
         running: check for clearances, flight plan, flight information, etc.
 
     interrupt -> scheduling interrupt and unblock ACC
 
-    wait ->
+    wait -> pass operation to *departing* ATC and wait for output, and unblock ACC
 
-    exit -> . Unblock ACC.
-        terminated: flight operations are complete. Remove flight.
+    wait -> pass operation to *landing* ATC and wait for output, and unblock ACC
 
+    wait -> ask plane for flight details, wait for output, and unblock ACC
 
-    dispatch -> ACC dispatches flight
+    exit -> remove flight from the cycle. Unblock ACC.
+        terminated: flight operations are complete.
 
+    wait completion -> reenter ready queue.
+
+    ===== ATC =====
+
+    ATC scheduling ->
     ATC states:
             -new
             -ready
@@ -53,5 +62,25 @@ public class Flight {
     exit:              running -> terminated
     wait completion:   waiting -> ready
 
+    created -> new Flight input: adds the Flight into correct ACC ready queue
+        ready: waiting for dispatch, in the correct ACC ready queue
 
+    dispatch -> start processing flight and block ATC
+        running:
+            for landings [get control / landing information, (landing wait), taxi/gate information, (taxi wait),
+            disembark/baggage information processing, (disembark/baggage), all successful/wrap up and end communication],
+
+            for departures [get control / boarding/ baggage, (boarding / baggage wait), takeoff information / flight
+            plan, (affirmative wait), taxi information, (pushback / taxi wait), ready / waiting to be cleared for
+            takeoff, (takeoff), all successful/wrap up and end communication/ pass back to AAC]
+
+    interrupt -> scheduling interrupt and unblock ATC
+    interrupt -> mayday, emergency, etc.
+
+    wait -> specified above, and unblock ATC]
+
+    exit -> remove flight from the cycle. Unblock ATC.
+        terminated: flight operations are complete.
+
+    wait completion -> reenter ready queue.
  */

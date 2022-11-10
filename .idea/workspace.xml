@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Initial commit.">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ACC.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ATC.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Airport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Flight.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Project3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/codes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/resources/input.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Added starter java files. Writing states inside Flight.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMPE250_p3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/CMPE250_p3.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Project3.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ACC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ACC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ATC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ATC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Flight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/codes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/codes.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +113,7 @@
       <option name="presentableId" value="Default" />
       <updated>1666947810386</updated>
       <workItem from="1666947812907" duration="5673000" />
-      <workItem from="1667937025246" duration="21908000" />
+      <workItem from="1667937025246" duration="28749000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit.">
       <created>1666985116316</created>
@@ -130,7 +122,21 @@
       <option name="project" value="LOCAL" />
       <updated>1666985116316</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="input creation scripts added.">
+      <created>1668085570550</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1668085570550</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added starter java files. Writing states inside Flight.java">
+      <created>1668085653504</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1668085653504</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,10 +155,13 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit." />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit." />
+    <MESSAGE value="input creation scripts added." />
+    <MESSAGE value="Added starter java files." />
+    <MESSAGE value="Added starter java files. Writing states inside Flight.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added starter java files. Writing states inside Flight.java" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CMPE250_p3$input.coverage" NAME="input Coverage Results" MODIFIED="1667990948271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/resources" />
-    <SUITE FILE_PATH="coverage/CMPE250_p3$airport_codes.coverage" NAME="codes Coverage Results" MODIFIED="1668080151911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/resources" />
+    <SUITE FILE_PATH="coverage/CMPE250_p3$airport_codes.coverage" NAME="codes Coverage Results" MODIFIED="1668088645679" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/resources" />
   </component>
 </project>
