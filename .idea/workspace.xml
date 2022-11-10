@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Added hash function for ATC codes. Started FSM implementation.">
+    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Added project notes to the README.md">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -109,7 +109,7 @@
       <option name="presentableId" value="Default" />
       <updated>1666947810386</updated>
       <workItem from="1666947812907" duration="5673000" />
-      <workItem from="1667937025246" duration="32231000" />
+      <workItem from="1667937025246" duration="32533000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit.">
       <created>1666985116316</created>
@@ -146,7 +146,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668107540532</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Added project notes to the README.md">
+      <created>1668108023472</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1668108023472</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,7 +177,8 @@
     <MESSAGE value="Added starter java files. Writing states inside Flight.java" />
     <MESSAGE value="Finished state template." />
     <MESSAGE value="Added hash function for ATC codes. Started FSM implementation." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added hash function for ATC codes. Started FSM implementation." />
+    <MESSAGE value="Added project notes to the README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added project notes to the README.md" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CMPE250_p3$input.coverage" NAME="input Coverage Results" MODIFIED="1667990948271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/resources" />
