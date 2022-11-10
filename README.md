@@ -16,7 +16,7 @@
   </tr>
   <tr>
     <td>Student Assistants</td>
-    <td>Bahadır Gezer <br> Batuhan Çelik <br> Zeynep Buse Aydın</td>
+    <td>Bahadır Gezer <br> Batuhan Çelik <br> Zeynep Buse Aydın <br> Ömer Faruk Ünal </td>
   </tr>
 </table>
 
