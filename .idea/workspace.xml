@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Added project notes to the README.md">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="fixed tree structure">
+      <change afterPath="$PROJECT_DIR$/src/main/java/enums/Priority.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/scheduling/AccFlightSchedule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/scheduling/AtcFlightScheduler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/scheduling/RoundRobin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Project3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Project3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Airport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Airport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Flight.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/processors/ATC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/processors/ATC.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,6 +21,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="Interface" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -44,6 +54,10 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="main.java.enums" />
+      <recent name="main.java.processors" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/resources/data" />
     </key>
@@ -109,7 +123,7 @@
       <option name="presentableId" value="Default" />
       <updated>1666947810386</updated>
       <workItem from="1666947812907" duration="5673000" />
-      <workItem from="1667937025246" duration="32533000" />
+      <workItem from="1667937025246" duration="38557000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit.">
       <created>1666985116316</created>
@@ -153,7 +167,21 @@
       <option name="project" value="LOCAL" />
       <updated>1668108023472</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="added tree strcutre">
+      <created>1668108431522</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1668108431522</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fixed tree structure">
+      <created>1668108765719</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1668108765719</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -178,7 +206,9 @@
     <MESSAGE value="Finished state template." />
     <MESSAGE value="Added hash function for ATC codes. Started FSM implementation." />
     <MESSAGE value="Added project notes to the README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added project notes to the README.md" />
+    <MESSAGE value="added tree strcutre" />
+    <MESSAGE value="fixed tree structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed tree structure" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CMPE250_p3$input.coverage" NAME="input Coverage Results" MODIFIED="1667990948271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/resources" />

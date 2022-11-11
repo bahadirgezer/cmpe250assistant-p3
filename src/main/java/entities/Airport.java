@@ -25,8 +25,4 @@ public class Airport {
     public String getCode() {
         return code;
     }
-
-    public TreeSet<String> getConnections() {
-        return connections;
-    }
 }

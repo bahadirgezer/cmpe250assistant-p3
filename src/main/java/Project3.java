@@ -1,6 +1,8 @@
 package main.java;
 
 public class Project3 {
+
+    public static Integer time = 0;
     public static void main(String[] args) { // discrete event simulation project.
 
         // Input
