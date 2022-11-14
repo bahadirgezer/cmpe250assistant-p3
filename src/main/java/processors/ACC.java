@@ -15,6 +15,11 @@ public class ACC { // Area Control Center // controls the area
         this.ATCs = ATCs;
     }
 
+    public ACC() {
+        this.code = "placeholder";
+        this.ATCs = new HashSet<>();
+    }
+
     public String generateAtcCode(String airportCode) { // return "{AccCode}{hash(AirportCode)"
         return this.code + hashAirportCode(airportCode);
     }
