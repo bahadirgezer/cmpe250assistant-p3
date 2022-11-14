@@ -3,7 +3,7 @@ package main.java.entities;
 import java.util.List;
 import java.util.TreeSet;
 
-public class Airport {
+public class Airport implements Comparable<Airport> {
     private final String code;
     private final TreeSet<String> connections;
 
@@ -41,6 +41,10 @@ public class Airport {
         this.hasATC = true;
     }
 
+    public TreeSet<String> getConnections() {
+        return connections;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -48,4 +52,10 @@ public class Airport {
         Airport airport = (Airport) o;
         return code.equals(airport.code);
     }
+
+    // Sort airports by code
+    public int compareTo(Airport airport) {
+        return this.code.compareTo(airport.code);
+    }
+
 }

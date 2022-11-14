@@ -6,17 +6,15 @@ import main.java.processors.ACC;
 import main.java.processors.ATC;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Project3 {
 
     public static Integer time = 0;
-    static HashMap<String, Airport> airports = new HashMap<>();
-    static HashMap<String, ACC> accs = new HashMap<>();
-    static HashMap<String, ATC> atcs = new HashMap<>();
-    static ArrayList<Flight> flights = new ArrayList<>();
+    static HashMap<String, Airport> airports;
+    static HashMap<String, ACC> accs;
+    static HashMap<String, ATC> atcs;
+    static ArrayList<Flight> flights;
     public static void main(String[] args) { // discrete event simulation project.
 
         /* Input */
@@ -42,13 +40,17 @@ public class Project3 {
 
         String line;
         List<String> tokens;
+        Deque<String> accCodes = null;
         try {
             tokens = List.of(br.readLine().split("\s"));
             int A = Integer.parseInt(tokens.get(0));
             int F = Integer.parseInt(tokens.get(1));
+            int C = Integer.parseInt(tokens.get(2));
             airports = new HashMap<>(A);
+            atcs = new HashMap<>(A);
             flights = new ArrayList<>(F);
-
+            accs = new HashMap<>(C);
+            accCodes = new ArrayDeque<>(C);
 
             for (int i = 0; i < A; i++) {
                 if ((line = br.readLine()) == null) {
@@ -81,6 +83,14 @@ public class Project3 {
                 flights.add(flight);
             }
 
+            for (int i = 0; i < C; i++) {
+                if ((line = br.readLine()) == null) {
+                    System.err.println("Exception caught: Input line could not be read.");
+                    System.exit(1);
+                }
+                accCodes.add(line.trim());
+            }
+
         } catch (IOException e) {
             System.err.println("Exception caught: Input file could not be read.");
             System.exit(1);
@@ -104,7 +114,7 @@ public class Project3 {
         // Create one ACC for each connected component of the airport graph.
         // Airport graph is undirected. Each connection is directed but in both directions.
         // Each ACC is responsible for all airports in its connected component.
-
+        createACCs(accCodes);
 
 
         /* End of Process */
@@ -126,24 +136,40 @@ public class Project3 {
         /* End of Output */
     }
 
-    public HashMap<String, ACC> createAirTrafficControl(ArrayList<String> accCodes) {
-        for (Airport airport : airports.values()) {
+    /**
+     * Creates the ACCs for the connected components of the airport graph.
+     * Airports will be searched in the order of their airport codes.
+     *
+     * @param accCodes The codes of the ACCs to be created. Is unique.
+     */
+    public static void createACCs(Deque<String> accCodes) {
+        for (Airport airport : airports.values().stream().sorted().toList()) {
             if (!airport.hasATC()) {
-                ACC acc = new ACC();
-                createAreaControlCenter(airport, acc);
-
-
+                ACC acc = new ACC(accCodes.pop());
+                accs.put(acc.getCode(), acc);
+                createATCs(airport, acc);
             }
         }
-
-        return null;
     }
 
-    public HashMap<String, ACC> createAreaControlCenter(Airport airport,
-                                                        ACC acc) {
-        for ()
+    /**
+     * Creates an Area Control Center for the given airport and adds it to the given ACC.
+     * Works like a DFS on the airport graph.
+     *
+     * @param airport
+     * @param acc
+     */
+    public static void createATCs(Airport airport, ACC acc) {
+        ATC initialAtc = new ATC(acc, airport);
+        airport.assignATC();
+        atcs.put(initialAtc.getCode(), initialAtc);
 
-        return null;
+        for (String connectedAirportCode : airport.getConnections()) {
+            Airport connectedAirport = airports.get(connectedAirportCode);
+            if (!connectedAirport.hasATC()) {
+                createATCs(connectedAirport, acc);
+            }
+        }
     }
 
     /*

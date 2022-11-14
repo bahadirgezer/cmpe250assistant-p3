@@ -24,17 +24,6 @@ public class AtcFlightScheduler {
     }
 
     public void enqueue(Flight flight) {
-        switch (flight.getPriority()) {
-            case EMERGENCY:
-                emergencyQueue.add(flight);
-                break;
-            case MEDIUM:
-                firstQueue.add(flight);
-                break;
-            case LOW:
-                secondQueue.add(flight);
-                break;
-        }
     }
 
     public Flight dispatch() {
@@ -49,5 +38,6 @@ public class AtcFlightScheduler {
         } else {
             return null;
         }
+        return null;
     }
 }

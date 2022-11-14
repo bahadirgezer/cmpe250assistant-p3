@@ -20,5 +20,9 @@ public class ATC { // Air Traffic Control
         status = ProcessorStatus.IDLE;
     }
 
+    public String getCode() {
+        return code;
+    }
+
 }
 

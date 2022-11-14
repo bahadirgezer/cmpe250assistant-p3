@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="started work on the scheduling part">
+    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Working on main">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Project3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Project3.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/entities/Airport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Airport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Flight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/enums/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/State.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/processors/ACC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/processors/ACC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/processors/ATC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/processors/ATC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/scheduling/AtcFlightScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scheduling/AtcFlightScheduler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +120,7 @@
       <option name="presentableId" value="Default" />
       <updated>1666947810386</updated>
       <workItem from="1666947812907" duration="5673000" />
-      <workItem from="1667937025246" duration="53604000" />
+      <workItem from="1667937025246" duration="55106000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit.">
       <created>1666985116316</created>
@@ -185,7 +185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668198423226</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Working on main">
+      <created>1668449012082</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1668449012082</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,7 +220,8 @@
     <MESSAGE value="added tree strcutre" />
     <MESSAGE value="fixed tree structure" />
     <MESSAGE value="started work on the scheduling part" />
-    <option name="LAST_COMMIT_MESSAGE" value="started work on the scheduling part" />
+    <MESSAGE value="Working on main" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working on main" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CMPE250_p3$input.coverage" NAME="input Coverage Results" MODIFIED="1667990948271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/resources" />
