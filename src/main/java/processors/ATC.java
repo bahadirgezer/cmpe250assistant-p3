@@ -1,23 +1,32 @@
 package main.java.processors;
 
-import main.java.entities.Airport;
-import main.java.enums.ProcessorStatus;
-import main.java.scheduling.AtcFlightScheduler;
+/**
+ * @class ATC - Air Traffic Controller
+ *
+ */
+public class ATC {
 
-public class ATC { // Air Traffic Control
+    /**
+     * @id - ATC code <br>
+     * <br>
+     * 7 characters: <br>
+     * 4 capital letters [AAAA-ZZZZ] + 3 digits [000-999] <br>
+     * <br>
+     * 4 capital letters come from the ACC <br>
+     * 3 digits come from hash function which the takes the airport code as input
+     */
+    private final String code;
 
-    private final String code; // "{AccCode}{hash(AirportCode)}"
-    private final ACC acc; // Area Control Center
-    private final Airport airport; // Airport
-    private ProcessorStatus status; // Processor state
+    /**
+     * @key - Flight code <br>
+     * @value - Flight object
+     */
+    private final ACC acc;
 
-    private AtcFlightScheduler readyQueue; // Ready queue
 
-    public ATC(ACC acc, Airport airport) {
+    public ATC(ACC acc, String airportCode) {
         this.acc = acc;
-        this.airport = airport;
-        this.code = acc.generateAtcCode(airport.getCode());
-        status = ProcessorStatus.IDLE;
+        this.code = acc.generateAtcCode(airportCode);
     }
 
     public String getCode() {

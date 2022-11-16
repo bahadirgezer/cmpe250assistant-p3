@@ -1,21 +1,19 @@
 package main.java.entities;
 
-import main.java.enums.Priority;
-import main.java.enums.State;
-
 import java.util.ArrayList;
 
-
 public class Flight implements Comparable<Flight> {
-    private State state;
 
-    private String flightCode;
-    private AirportAtcPair origin;
-    private AirportAtcPair destination;
 
-    private Integer admissionTime;
+    private final Integer admissionTime;
 
-    private Integer opCounter;
+    /**
+     * @id - Flight code <br>
+     */
+    private final String code;
+    private final String accCode;
+    private final String origin;
+    private final String destination;
 
     /**
      * index -> time <br>
@@ -41,54 +39,42 @@ public class Flight implements Comparable<Flight> {
      * 19 -> terminal processing time (r) (landing ATC -> ACC) (landing ATC terminate) <br>
      * 20 -> ACC take control back && file flight record processing time (r) (ACC terminate) <br>
      */
-    private ArrayList<Integer> opTimes;
+    private ArrayList<Integer> operationTimes;
 
-    public Flight() {
-        this.state = State.ACC_NEW;
-        this.opCounter = 0;
-    }
+    public Flight(int admissionTime,
+                  String code,
+                  String accCode,
+                  String origin,
+                  String destination,
+                  ArrayList<Integer> operationTimes) {
 
-    public Flight(String flightCode, Integer admissionTime, Airport origin, Airport destination, ArrayList<Integer> opTimes) {
-        this.state = State.ACC_NEW;
-        this.opCounter = 0;
-        this.opTimes = opTimes;
-        this.flightCode = flightCode;
+        this.admissionTime = admissionTime;
+        this.code = code;
+        this.accCode = accCode;
         this.origin = origin;
         this.destination = destination;
-        this.admissionTime = admissionTime;
-
+        this.operationTimes = operationTimes;
     }
 
-    public Integer AccNew() {
-        if (this.state != state.ACC_NEW) {
-            System.err.println("Invalid state transition: from " + this.state + " to ACC_NEW");
-            return -1;
-        }
-
-        this.state = State.ACC_READY;
-        return opTimes.get(0);
+    public Integer getAdmissionTime() {
+        return admissionTime;
     }
 
-    public Integer AccTerminate() {
-        if (this.state != state.ACC_TERMINATED) {
-            System.err.println("Invalid state transition: from " + this.state + " to ACC_TERMINATED");
-            return -1;
-        }
-
-        this.state = State.ACC_TERMINATED;
-        return opTimes.get(20);
+    public String getCode() {
+        return code;
     }
 
-    public Integer AccReady() {
-        if (this.state != state.ACC_READY) {
-            System.err.println("Invalid state transition: from " + this.state + " to ACC_READY");
-            return -1;
-        }
-
-        this.state = State.ACC_RUNNING;
-        return opTimes.get(1);
+    public String getAccCode() {
+        return accCode;
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
 
     @Override
     public int compareTo(Flight o) {

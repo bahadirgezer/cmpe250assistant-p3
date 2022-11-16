@@ -171,7 +171,7 @@ Pre-computation phase: Find the connected airport components and add an ATC to e
 
 ### Input file format:
 
-1. First line: \<number of airports> \<number of flights>
+1. First line: \<number of airports> \<number of flights> \<number of ACCs>
 2. Next \<number of airports> lines: \<airport code> \<ACC code> \<list of connections>
 3. Next \<number of flights> lines: \<flight code> \<admission time> \<departure airport code> \<arrival airport code> \<list of operation times>
 

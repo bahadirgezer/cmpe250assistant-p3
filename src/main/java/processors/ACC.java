@@ -1,24 +1,38 @@
 package main.java.processors;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import main.java.entities.Flight;
+
+import java.util.*;
 
 public class ACC { // Area Control Center // controls the area
 
+    /**
+     * @id - ACC code <br>
+     * 4 capital letters [A-Z]
+     */
     private final String code;
-    private final HashSet<ATC> ATCs;
+
+    /**
+     * List of ATCs assigned to this ACC <br>
+     * @key - Airport code
+     * @value - ATC for that airport
+     */
+    private final HashMap<String, ATC> ATCs;
     private List<String> table = Arrays.asList(new String[100]); // hash table for ATC codes
 
-    public ACC(String code, HashSet<ATC> ATCs) {
-        this.code = code;
-        this.ATCs = ATCs;
-    }
+    private ArrayDeque<Flight> flightAdmissionQueue; // queue for flights waiting to be admitted
 
     public ACC(String code) {
         this.code = code;
-        this.ATCs = new HashSet<>();
+        this.ATCs = new HashMap<>();
     }
+
+    public void admitFlight(Flight flight) {
+        // add to the front remove from the back
+        flightAdmissionQueue.addFirst(flight);
+    }
+
+
     public String generateAtcCode(String airportCode) { // return "{AccCode}{hash(AirportCode)"
         return this.code + hashAirportCode(airportCode);
     }
@@ -34,8 +48,15 @@ public class ACC { // Area Control Center // controls the area
         return String.format("%02d", val);
     }
 
-    public String getCode() {
-        return code;
+    public void addATC(String airportCode, ATC atc) {
+        this.ATCs.put(airportCode, atc);
+    }
+
+    public void processFlights() {
+    }
+
+    public String toString() {
+        return "";
     }
 }
 

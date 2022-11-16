@@ -1,6 +1,5 @@
 package main.java;
 
-import main.java.entities.Airport;
 import main.java.entities.Flight;
 import main.java.processors.ACC;
 import main.java.processors.ATC;
@@ -12,92 +11,92 @@ import java.util.logging.Logger;
 public class Project3 {
 
     public static Logger logger = Logger.getLogger(Project3.class.getName());
-    public static Integer time = 0;
-    private static HashMap<String, Airport> airports;
+
+    /**
+     * @key - ACC code
+     * @value - ACC object
+     */
     private static HashMap<String, ACC> accs;
-    private static HashMap<String, ATC> atcs;
+
+    /**
+     * flights
+     *
+     */
     private static ArrayList<Flight> flights;
 
     public static void main(String[] args) { // discrete event simulation project.
 
         /* Input */
-        BufferedWriter bw = null;
         BufferedReader br = null;
         try {
             br = new BufferedReader(
                     new FileReader(args[0]));
-            bw = new BufferedWriter(
-                    new FileWriter(args[1]));
 
         } catch (FileNotFoundException e) {
             System.err.println("Exception caught: Input file not found.");
             System.exit(1);
-        } catch (IOException e) {
-            System.err.println("Exception caught: Output file could not be opened.");
-            System.exit(1);
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Exception caught: Input and output file paths must be provided.");
+            System.err.println("Exception caught: Input file path must be provided.");
             System.exit(1);
         }
 
         String line;
         List<String> tokens;
-        Deque<String> accCodes = null;
         try {
             tokens = List.of(br.readLine().split("\s"));
 
-            /* number of airports */
-            int A = Integer.parseInt(tokens.get(0));
-
+            /* number of ACCs */
+            int numACCs = Integer.parseInt(tokens.get(0));
             /* number of flights */
-            int F = Integer.parseInt(tokens.get(1));
+            int numFlights = Integer.parseInt(tokens.get(1));
 
-            /* number of area control centers */
-            int C = Integer.parseInt(tokens.get(2));
+            flights = new ArrayList<>(numFlights);
+            accs = new HashMap<>(numACCs);
 
-            airports = new HashMap<>(A);
-            atcs = new HashMap<>(A);
-            flights = new ArrayList<>(F);
-            accs = new HashMap<>(C);
-            accCodes = new ArrayDeque<>(C);
-            
-
-            for (int i = 0; i < A; i++) {
+            for (int i = 0; i < numACCs; i++) {
                 if ((line = br.readLine()) == null) {
                     System.err.println("Exception caught: Input line could not be read.");
                     System.exit(1);
                 }
                 tokens = List.of(line.split("\s"));
-                String airportCode = tokens.get(0);
-                List<String> connections = tokens.subList(1, tokens.size());
-                Airport airport = new Airport(airportCode, connections);
-                airports.put(airportCode, airport);
+
+                ACC acc = new ACC(tokens.get(0));
+                List<String> airportCodes = tokens.subList(1, tokens.size());
+
+                for (String airportCode : airportCodes) {
+                    ATC atc = new ATC(acc, airportCode);
+                    acc.addATC(airportCode, atc);
+                }
             }
 
-            for (int i = 0; i < F; i++) {
+            for (int i = 0; i < numFlights; i++) {
                 if ((line = br.readLine()) == null) {
                     System.err.println("Exception caught: Input line could not be read.");
                     System.exit(1);
                 }
                 tokens = List.of(line.split("\s"));
-                String flightCode = tokens.get(0);
-                Integer admissionTime = Integer.parseInt(tokens.get(1));
 
-                String origin = tokens.get(2);
-                Airport originAirport = airports.get(origin);
+                int admissionTime = Integer.parseInt(tokens.get(0));
+                String flightCode = tokens.get(1);
+                String accCode = tokens.get(2);
+                String departureAirportCode = tokens.get(3);
+                String arrivalAirportCode = tokens.get(4);
 
-                String destination = tokens.get(3);
-                Airport destinationAirport = airports.get(destination);
+                ArrayList<Integer> operationTimes = new ArrayList<>(
+                        tokens.subList(4,
+                                tokens.size()).stream()
+                                .map(Integer::parseInt).toList());
 
-                ArrayList<Integer> opTimes = tokens.stream()
-                        .skip(4)
-                        .mapToInt(Integer::parseInt)
-                        .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+                Flight flight = new Flight(
+                        admissionTime,
+                        flightCode,
+                        accCode,
+                        departureAirportCode,
+                        arrivalAirportCode,
+                        operationTimes);
 
-                Flight flight = new Flight(flightCode, admissionTime, originAirport, destinationAirport, opTimes);
                 flights.add(flight);
             }
-
 
         } catch (IOException e) {
             System.err.println("Exception caught: Input file could not be read.");
@@ -119,25 +118,34 @@ public class Project3 {
         /* Process */
         StringBuilder sb = new StringBuilder();
 
-        // Create ACCs and ATCs
-        createACCs(accCodes);
-        accCodes = null; // help garbage collector
-
-        // sort flights in flights arraylist by admission time in reverse order by using the comparable interface
         flights.sort(Comparator.reverseOrder());
-
-        for (Flight flight : flights) {
-
+        while (!flights.isEmpty()) {
+            Flight flight = flights.remove(flights.size() - 1);
+            ACC acc = accs.get(flight.getAccCode());
+            acc.admitFlight(flight);
         }
+        flights = null;
 
-        // Main process loop
         for (ACC acc : accs.values()) {
-            
+            acc.processFlights();
+            sb.append(acc);
         }
-
+        accs = null;
         /* End of Process */
 
         /* Output */
+        BufferedWriter bw = null;
+        try {
+            bw = new BufferedWriter(
+                    new FileWriter(args[1]));
+        } catch (IOException e) {
+            System.err.println("Exception caught: Output file could not be opened.");
+            System.exit(1);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Exception caught: Output file path must be provided.");
+            System.exit(1);
+        }
+
         try {
             bw.write(sb.toString());
         } catch (IOException e) {
@@ -154,12 +162,14 @@ public class Project3 {
         /* End of Output */
     }
 
+
     /**
      * Creates the ACCs for the connected components of the airport graph.
      * Airports will be searched in the order of their airport codes.
      *
      * @param accCodes The codes of the ACCs to be created. Is unique.
      */
+    /*
     private  static void createACCs(Deque<String> accCodes) {
         for (Airport airport : airports.values().stream().sorted().toList()) {
             if (!airport.hasATC()) {
@@ -169,6 +179,7 @@ public class Project3 {
             }
         }
     }
+    */
 
     /**
      * Creates an Area Control Center for the given airport and adds it to the given ACC.
@@ -177,6 +188,7 @@ public class Project3 {
      * @param airport The airport to create an ATC for.
      * @param acc The ACC to add the ATC to.
      */
+    /*
     private static void createATCs(Airport airport, ACC acc) {
         ATC initialAtc = new ATC(acc, airport);
         airport.assignATC();
@@ -189,13 +201,14 @@ public class Project3 {
             }
         }
     }
+    */
 }
 
 /*
     Input file format:
-    1. First line: <number of airports> <number of flights>
-    2. Next <number of airports> lines: <airport code> <ACC code> <list of connections>
-    3. Next <number of flights> lines: <flight code> <admission time> <departure airport code> <arrival airport code> <list of operation times>
+    1. First line: <number of ACCs> <number of flights>
+    2. Next <number of ACCs> lines: <ACC code> <airport code> <airport code> ... <airport code>
+    3. Next <number of flights> lines: <admission time> <flight code> <ACC code> <departure airport code> <arrival airport code> <list of operation times>
 
  */
 
