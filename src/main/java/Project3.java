@@ -7,18 +7,20 @@ import main.java.processors.ATC;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Project3 {
 
+    public static Logger logger = Logger.getLogger(Project3.class.getName());
     public static Integer time = 0;
-    static HashMap<String, Airport> airports;
-    static HashMap<String, ACC> accs;
-    static HashMap<String, ATC> atcs;
-    static ArrayList<Flight> flights;
+    private static HashMap<String, Airport> airports;
+    private static HashMap<String, ACC> accs;
+    private static HashMap<String, ATC> atcs;
+    private static ArrayList<Flight> flights;
+
     public static void main(String[] args) { // discrete event simulation project.
 
         /* Input */
-
         BufferedWriter bw = null;
         BufferedReader br = null;
         try {
@@ -43,14 +45,22 @@ public class Project3 {
         Deque<String> accCodes = null;
         try {
             tokens = List.of(br.readLine().split("\s"));
+
+            /* number of airports */
             int A = Integer.parseInt(tokens.get(0));
+
+            /* number of flights */
             int F = Integer.parseInt(tokens.get(1));
+
+            /* number of area control centers */
             int C = Integer.parseInt(tokens.get(2));
+
             airports = new HashMap<>(A);
             atcs = new HashMap<>(A);
             flights = new ArrayList<>(F);
             accs = new HashMap<>(C);
             accCodes = new ArrayDeque<>(C);
+            
 
             for (int i = 0; i < A; i++) {
                 if ((line = br.readLine()) == null) {
@@ -71,25 +81,23 @@ public class Project3 {
                 }
                 tokens = List.of(line.split("\s"));
                 String flightCode = tokens.get(0);
-                String origin = tokens.get(1);
-                String destination = tokens.get(2);
+                Integer admissionTime = Integer.parseInt(tokens.get(1));
+
+                String origin = tokens.get(2);
+                Airport originAirport = airports.get(origin);
+
+                String destination = tokens.get(3);
+                Airport destinationAirport = airports.get(destination);
+
                 ArrayList<Integer> opTimes = tokens.stream()
-                        .skip(3)
+                        .skip(4)
                         .mapToInt(Integer::parseInt)
                         .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-                Airport originAirport = airports.get(origin);
-                Airport destinationAirport = airports.get(destination);
-                Flight flight = new Flight(flightCode, originAirport, destinationAirport, opTimes);
+
+                Flight flight = new Flight(flightCode, admissionTime, originAirport, destinationAirport, opTimes);
                 flights.add(flight);
             }
 
-            for (int i = 0; i < C; i++) {
-                if ((line = br.readLine()) == null) {
-                    System.err.println("Exception caught: Input line could not be read.");
-                    System.exit(1);
-                }
-                accCodes.add(line.trim());
-            }
 
         } catch (IOException e) {
             System.err.println("Exception caught: Input file could not be read.");
@@ -111,11 +119,21 @@ public class Project3 {
         /* Process */
         StringBuilder sb = new StringBuilder();
 
-        // Create one ACC for each connected component of the airport graph.
-        // Airport graph is undirected. Each connection is directed but in both directions.
-        // Each ACC is responsible for all airports in its connected component.
+        // Create ACCs and ATCs
         createACCs(accCodes);
+        accCodes = null; // help garbage collector
 
+        // sort flights in flights arraylist by admission time in reverse order by using the comparable interface
+        flights.sort(Comparator.reverseOrder());
+
+        for (Flight flight : flights) {
+
+        }
+
+        // Main process loop
+        for (ACC acc : accs.values()) {
+            
+        }
 
         /* End of Process */
 
@@ -142,7 +160,7 @@ public class Project3 {
      *
      * @param accCodes The codes of the ACCs to be created. Is unique.
      */
-    public static void createACCs(Deque<String> accCodes) {
+    private  static void createACCs(Deque<String> accCodes) {
         for (Airport airport : airports.values().stream().sorted().toList()) {
             if (!airport.hasATC()) {
                 ACC acc = new ACC(accCodes.pop());
@@ -156,10 +174,10 @@ public class Project3 {
      * Creates an Area Control Center for the given airport and adds it to the given ACC.
      * Works like a DFS on the airport graph.
      *
-     * @param airport
-     * @param acc
+     * @param airport The airport to create an ATC for.
+     * @param acc The ACC to add the ATC to.
      */
-    public static void createATCs(Airport airport, ACC acc) {
+    private static void createATCs(Airport airport, ACC acc) {
         ATC initialAtc = new ATC(acc, airport);
         airport.assignATC();
         atcs.put(initialAtc.getCode(), initialAtc);
@@ -171,38 +189,14 @@ public class Project3 {
             }
         }
     }
-
-    /*
-        int find_set(int v) {
-            if (v == parent[v])
-                return v;
-            return parent[v] = find_set(parent[v]);
-        }
-
-        void make_set(int v) {
-            parent[v] = v;
-            size[v] = 1;
-        }
-
-        void union_sets(int a, int b) {
-            a = find_set(a);
-            b = find_set(b);
-            if (a != b) {
-                if (size[a] < size[b])
-                    swap(a, b);
-                parent[b] = a;
-                size[a] += size[b];
-            }
-        }
-
-     */
 }
 
 /*
     Input file format:
     1. First line: <number of airports> <number of flights>
-    2. Next <number of airports> lines: <airport code> <list of connections>
-    3. Next <number of flights> lines: <flight code> <departure airport code> <arrival airport code> <list of operation times>
+    2. Next <number of airports> lines: <airport code> <ACC code> <list of connections>
+    3. Next <number of flights> lines: <flight code> <admission time> <departure airport code> <arrival airport code> <list of operation times>
+
  */
 
 /*

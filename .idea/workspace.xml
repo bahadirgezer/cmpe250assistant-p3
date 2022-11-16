@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Working on main">
+    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Finished ACC and ATC creation. used DFS approach to find connected components.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/AirportAtcPair.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Project3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Project3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Airport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Airport.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Flight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/processors/ACC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/processors/ACC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/processors/ATC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/processors/ATC.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/scheduling/AtcFlightScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/scheduling/AtcFlightScheduler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +20,7 @@
         <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
+        <option value="Record" />
       </list>
     </option>
   </component>
@@ -36,20 +36,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "jdk.selected.JAVA_MODULE": "17",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="main.java.enums" />
@@ -59,7 +59,7 @@
       <recent name="$PROJECT_DIR$/src/resources/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.airport_codes">
+  <component name="RunManager">
     <configuration name="codes" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CMPE250_p3" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -104,12 +104,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.airport_codes" />
-        <item itemvalue="Python.input" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -120,7 +114,8 @@
       <option name="presentableId" value="Default" />
       <updated>1666947810386</updated>
       <workItem from="1666947812907" duration="5673000" />
-      <workItem from="1667937025246" duration="55106000" />
+      <workItem from="1667937025246" duration="62414000" />
+      <workItem from="1668618006182" duration="1521000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit.">
       <created>1666985116316</created>
@@ -192,7 +187,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668449012082</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Finished ACC and ATC creation. used DFS approach to find connected components.">
+      <created>1668450404566</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1668450404566</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -221,10 +223,7 @@
     <MESSAGE value="fixed tree structure" />
     <MESSAGE value="started work on the scheduling part" />
     <MESSAGE value="Working on main" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working on main" />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CMPE250_p3$input.coverage" NAME="input Coverage Results" MODIFIED="1667990948271" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/resources" />
-    <SUITE FILE_PATH="coverage/CMPE250_p3$airport_codes.coverage" NAME="codes Coverage Results" MODIFIED="1668088645679" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/resources" />
+    <MESSAGE value="Finished ACC and ATC creation. used DFS approach to find connected components." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished ACC and ATC creation. used DFS approach to find connected components." />
   </component>
 </project>
