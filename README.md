@@ -63,6 +63,9 @@ Pre-computation phase: Find the connected airport components and add an ATC to e
 
     Output: Print the average wait time for each flight.
 
+### Flight States
+
+<img title="Flight process state diagram" alt="Fig. 1" src="src/resources/images/states.png">
 
 
 ### ACC - Area Control Center
@@ -139,6 +142,39 @@ Pre-computation phase: Find the connected airport components and add an ATC to e
         terminated: flight operations are complete.
 
     wait completion -> reenter ready queue.
+
+### Processing Times
+
+#### index -> time <br>
+ *  0 -> ACC initial processing time (r) <br>
+ *  1 -> Passing flight information to ACC time (w) <br>
+ *  2 -> ACC transfer control to ATC processing time (r) (ACC -> departure ATC) (ACC wait until ATC termination) <br>
+ *  3 -> initial ATC processing time (r) <br>
+ *  4 -> boarding wait time (w) <br>
+ *  5 -> taxi information processing time (r) <br>
+ *  6 -> taxi wait time (w) <br>
+ *  7 -> takeoff clearance processing time (r) <br>
+ *  8 -> takeoff && getting away from the ATC control area wait time (w) <br>
+ *  9 -> transfer control to ACC processing time (r) (departure ATC -> ACC) (departure ATC terminate) <br>
+ * 10 -> ACC take control back and flight path processing time (r) <br>
+ * 11 -> flight wait time (w) <br>
+ * 12 -> ACC transfer control to ATC processing time (r) (ACC -> ATC) (ACC wait until ATC termination) <br>
+ * 13 -> ATC initial processing time && runway information (r) <br>
+ * 14 -> flight landing wait time (w) <br>
+ * 15 -> taxi information processing time (r) <br>
+ * 16 -> taxi wait time (w) <br>
+ * 17 -> gate information processing time (r) <br>
+ * 18 -> disembark wait time (w) <br>
+ * 19 -> terminal processing time (r) (landing ATC -> ACC) (landing ATC terminate) <br>
+ * 20 -> ACC take control back && file flight record processing time (r) (ACC terminate) <br>
+
+
+### Input file format:
+
+1. First line: \<number of airports> \<number of flights>
+2. Next \<number of airports> lines: \<airport code> \<ACC code> \<list of connections>
+3. Next \<number of flights> lines: \<flight code> \<admission time> \<departure airport code> \<arrival airport code> \<list of operation times>
+
 
 #### Additional
 

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Finished ACC and ATC creation. used DFS approach to find connected components.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/entities/AirportAtcPair.java" afterDir="false" />
+    <list default="true" id="fc9f9bf4-b569-457a-86e3-9600d7bb6ca7" name="Changes" comment="Major refactoring because of changes in the input format.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Project3.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Project3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/entities/Flight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/entities/Flight.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/processors/ACC.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/processors/ACC.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +112,7 @@
       <updated>1666947810386</updated>
       <workItem from="1666947812907" duration="5673000" />
       <workItem from="1667937025246" duration="62414000" />
-      <workItem from="1668618006182" duration="1521000" />
+      <workItem from="1668618006182" duration="2144000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit.">
       <created>1666985116316</created>
@@ -194,7 +191,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668450404566</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Major refactoring because of changes in the input format.">
+      <created>1668619842748</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1668619842748</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -224,6 +228,7 @@
     <MESSAGE value="started work on the scheduling part" />
     <MESSAGE value="Working on main" />
     <MESSAGE value="Finished ACC and ATC creation. used DFS approach to find connected components." />
-    <option name="LAST_COMMIT_MESSAGE" value="Finished ACC and ATC creation. used DFS approach to find connected components." />
+    <MESSAGE value="Major refactoring because of changes in the input format." />
+    <option name="LAST_COMMIT_MESSAGE" value="Major refactoring because of changes in the input format." />
   </component>
 </project>
