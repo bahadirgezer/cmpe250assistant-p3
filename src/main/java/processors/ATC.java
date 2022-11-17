@@ -1,5 +1,7 @@
 package main.java.processors;
 
+import main.java.entities.Flight;
+
 /**
  * @class ATC - Air Traffic Controller
  *
@@ -33,5 +35,10 @@ public class ATC {
         return code;
     }
 
+    public void takeoff(Flight flight) {
+    }
+
+    public void land(Flight flight) {
+    }
 }
 

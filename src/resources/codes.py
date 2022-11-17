@@ -9,7 +9,7 @@ def generate_airport_codes():
         for b in string.ascii_uppercase:
             for c in string.ascii_uppercase:
                 airport_codes.append(f"{a}{b}{c}")
-    print(len(airport_codes))
+    # print(len(airport_codes)) -> 17576
     with open("data/airport_codes.json", "w") as file:
         json.dump(airport_codes, file)
 
@@ -21,9 +21,9 @@ def generate_atc_codes():
             for c in string.ascii_uppercase:
                 for d in string.ascii_uppercase:
                     atc_codes.append(f"{a}{b}{c}{d}")
+    # print(len(atc_codes)) -> 456976
     with open("data/atc_codes.json", "w") as file:
         json.dump(atc_codes, file)
-
 
 
 def main():

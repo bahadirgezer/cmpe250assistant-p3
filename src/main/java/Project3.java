@@ -82,7 +82,7 @@ public class Project3 {
                 String departureAirportCode = tokens.get(3);
                 String arrivalAirportCode = tokens.get(4);
 
-                ArrayList<Integer> operationTimes = new ArrayList<>(
+                ArrayDeque<Integer> operationTimes = new ArrayDeque<>(
                         tokens.subList(4,
                                 tokens.size()).stream()
                                 .map(Integer::parseInt).toList());
@@ -122,7 +122,7 @@ public class Project3 {
         while (!flights.isEmpty()) {
             Flight flight = flights.remove(flights.size() - 1);
             ACC acc = accs.get(flight.getAccCode());
-            acc.admitFlight(flight);
+            acc.addFlight(flight);
         }
         flights = null;
 
