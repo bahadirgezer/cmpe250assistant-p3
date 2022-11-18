@@ -22,49 +22,62 @@ public class ACC { // Area Control Center // controls the area
     private final HashMap<String, ATC> ATCs;
     private final List<String> table = Arrays.asList(new String[1000]); // hash table for ATC codes
 
-    private final ArrayDeque<Flight> flightAdmissionQue; // queue for flights waiting to be admitted
-
     private final ArrayDeque<Flight> readyQue; // queue for flights ready to be processed
 
     private final PriorityQueue<Flight> waitQue; // queue for flights waiting to be ready
 
+    private final ArrayDeque<ATC> busyATCs; // queue for ATCs busy with a flight
+
+    private Integer time;
+
     public ACC(String code) {
         this.code = code;
         this.ATCs = new HashMap<>();
-        this.flightAdmissionQue = new ArrayDeque<>();
         this.readyQue = new ArrayDeque<>();
-        this.waitQue = new PriorityQueue<>(Comparator.comparingInt(Flight::getWaitEndTime));
+        this.waitQue = new PriorityQueue<>();
+        this.busyATCs = new ArrayDeque<>();
+        this.time = 0;
     }
 
     public void processFlights() {
-        if (flightAdmissionQue.isEmpty())
+        if (waitQue.isEmpty())
             return;
-        readyQue.add(flightAdmissionQue.pop());
+        readyQue.add(waitQue.poll());
 
-        int time = readyQue.peek().getAdmissionTime();
-        while (!readyQue.isEmpty() &&
-                !waitQue.isEmpty() && // TODO: check if this is correct
-                !flightAdmissionQue.isEmpty()) {
+        time = readyQue.peek().getReadyTime();
+        while (!readyQue.isEmpty() || !waitQue.isEmpty()) {
 
-            Flight flight = readyQue.pop();
-            time += flight.process(TIME_QUANTUM);
-            admitFlights(time);
+            Flight flight;
+            if (!readyQue.isEmpty()) {
+                flight = readyQue.pop();
+                time += flight.process(TIME_QUANTUM);
+                admitFlights(time);
+            } else {
+                flight = waitQue.poll();
+                time = flight.getReadyTime();
+                time += flight.process(TIME_QUANTUM);
+                admitFlights(time);
+            }
+
+            for (ATC atc : busyATCs) {
+                atc.step(time);
+                if (atc.isFree()) {
+                    busyATCs.remove(atc);
+                }
+            }
 
             switch (flight.getStatus()) {
                 case READY:
                     readyQue.add(flight);
                     break;
                 case WAITING:
-                    // TODO: wait queue thing
                     waitQue.add(flight);
                     break;
-                case TAKEOFF:
-                    // TODO: takeoff
-                    ATCs.get(flight.getOrigin()).takeoff(flight);
-                    break;
-                case LANDING:
-                    // TODO: land
-                    ATCs.get(flight.getDestination()).land(flight);
+                case TAKEOFF_BEGIN:
+                case LANDING_BEGIN:
+                    ATC atc = ATCs.get(flight.getOrigin());
+                    atc.addFlight(flight);
+                    busyATCs.add(atc);
                     break;
                 case FINISHED:
                     break;
@@ -73,9 +86,15 @@ public class ACC { // Area Control Center // controls the area
     }
 
     private void admitFlights(Integer untilTime) {
-        while (!flightAdmissionQue.isEmpty() &&
-                flightAdmissionQue.peek().getAdmissionTime() <= untilTime)
-            readyQue.add(flightAdmissionQue.pop());
+        while (!waitQue.isEmpty() &&
+                waitQue.peek().getReadyTime() <= untilTime) {
+            readyQue.add(Objects.requireNonNull(waitQue.poll()));
+        }
+    }
+
+    public void addFlight(Flight flight) {
+        // add to the back remove from the front
+        waitQue.add(flight);
     }
 
     /**
@@ -101,11 +120,6 @@ public class ACC { // Area Control Center // controls the area
 
     public void addATC(String airportCode, ATC atc) {
         this.ATCs.put(airportCode, atc);
-    }
-
-    public void addFlight(Flight flight) {
-        // add to the back remove from the front
-        flightAdmissionQue.add(flight);
     }
 
     public String toString() {
