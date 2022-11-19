@@ -108,14 +108,15 @@ public class ACC { // Area Control Center // controls the area
     }
 
     private String hashAirportCode(String airportCode) {
-        int val = airportCode.charAt(0) * 10000 + airportCode.charAt(1) * 100 + airportCode.charAt(2); // ASCII values
+        int val = (int)airportCode.charAt(0) + (int)airportCode.charAt(1) * 31 + (int)airportCode.charAt(2) * 31 * 31; // ASCII values
         int i = 0;
+        val %= 1000;
         while (table.get(val) != null) { // collision, quadratic probing
-            val = (val + i*i) % 10000;
+            val = (val + i) % 1000;
             i++;
         }
         table.set(val, airportCode);
-        return String.format("%04d", val);
+        return String.format("%03d", val);
     }
 
     public void addATC(String airportCode, ATC atc) {
@@ -124,6 +125,10 @@ public class ACC { // Area Control Center // controls the area
 
     public String toString() {
         return "";
+    }
+
+    public String getCode() {
+        return code;
     }
 }
 

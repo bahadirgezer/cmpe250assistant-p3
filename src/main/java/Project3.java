@@ -61,12 +61,14 @@ public class Project3 {
                 tokens = List.of(line.split("\s"));
 
                 ACC acc = new ACC(tokens.get(0));
-                List<String> airportCodes = tokens.subList(1, tokens.size());
+                List<String> airportCodes = new ArrayList<>();
+                airportCodes = tokens.subList(1, tokens.size());
 
                 for (String airportCode : airportCodes) {
                     ATC atc = new ATC(acc, airportCode);
                     acc.addATC(airportCode, atc);
                 }
+                accs.put(acc.getCode(), acc);
             }
 
             for (int i = 0; i < numFlights; i++) {
@@ -83,7 +85,7 @@ public class Project3 {
                 String arrivalAirportCode = tokens.get(4);
 
                 ArrayDeque<Integer> operationTimes = new ArrayDeque<>(
-                        tokens.subList(4,
+                        tokens.subList(5,
                                 tokens.size()).stream()
                                 .map(Integer::parseInt).toList());
 
