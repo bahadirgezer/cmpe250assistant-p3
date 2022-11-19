@@ -54,33 +54,24 @@ public class ACC {
 
     public void processFlights() {
         if (waitQue.isEmpty())
-            return;
+            return; // No flights to process
         readyQue.add(waitQue.poll());
 
-        assert readyQue.peek() != null;
-        time = readyQue.peek().getReadyTime();
         while (!readyQue.isEmpty() || !waitQue.isEmpty()) {
-
             Flight flight;
-            int timeProcessed;
-            if (!readyQue.isEmpty()) {
+            if (!readyQue.isEmpty())
                 flight = readyQue.pop();
-                timeProcessed = flight.process(TIME_QUANTUM);
-                time += timeProcessed;
-                admitFlights(time);
-            } else {
+            else
                 flight = waitQue.poll();
-                time = flight.getReadyTime();
-                timeProcessed = flight.process(TIME_QUANTUM);
-                time += timeProcessed;
-                admitFlights(time);
-            }
+            time = flight.getReadyTime();
+            int timeProcessed = flight.process(TIME_QUANTUM);
+            time += timeProcessed;
+            admitFlights(time);
 
             for (ATC atc : busyATCs) {
                 atc.step(time);
-                if (atc.isFree()) {
+                if (atc.isFree())
                     busyATCs.remove(atc);
-                }
             }
 
             switch (flight.getStatus()) {
@@ -91,10 +82,14 @@ public class ACC {
                     waitQue.add(flight);
                     break;
                 case TAKEOFF_BEGIN:
+                    ATC takeoff = ATCs.get(flight.getOrigin());
+                    takeoff.addFlight(flight);
+                    busyATCs.add(takeoff);
+                    break;
                 case LANDING_BEGIN:
-                    ATC atc = ATCs.get(flight.getOrigin());
-                    atc.addFlight(flight);
-                    busyATCs.add(atc);
+                    ATC landing = ATCs.get(flight.getDestination());
+                    landing.addFlight(flight);
+                    busyATCs.add(landing);
                     break;
                 case FINISHED:
                     break;
@@ -104,14 +99,27 @@ public class ACC {
 
     private void admitFlights(Integer untilTime) {
         while (!waitQue.isEmpty() &&
-                waitQue.peek().getReadyTime() <= untilTime) {
+                waitQue.peek().getReadyTime() <= untilTime)
             readyQue.add(Objects.requireNonNull(waitQue.poll()));
-        }
+    }
+
+    public void addAtc(String airportCode, ATC atc) {
+        this.ATCs.put(airportCode, atc);
     }
 
     public void addFlight(Flight flight) {
-        // add to the back remove from the front
         waitQue.add(flight);
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    /**
+     * @return "{acc code} {time} {average wait time} {maximum wait queue length}"
+     */
+    public String toString() {
+        return String.format("%s %d", this.code, this.time) + this.getAirportSlots();
     }
 
     /**
@@ -124,26 +132,22 @@ public class ACC {
     }
 
     private void hashAirportCode(String airportCode) {
-        int val = (int)airportCode.charAt(0) + (int)airportCode.charAt(1) * 31 + (int)airportCode.charAt(2) * 31 * 31; // ASCII values
+        int val = (int)airportCode.charAt(0) +
+                (int)airportCode.charAt(1) * 31 +
+                (int)airportCode.charAt(2) * 31 * 31; // ASCII value hash function
+
         int i = 0;
         val %= 1000;
-        while (table.get(val) != null) { // collision, quadratic probing
+        while (table.get(val) != null) { // collision, linear probing
             val = (val + i) % 1000;
             i++;
         }
         table.set(val, airportCode);
-        // return String.format("%03d", val);
     }
 
-    public void addATC(String airportCode, ATC atc) {
-        this.ATCs.put(airportCode, atc);
-    }
-
-    public String toString() {
-        // <acc code> <time> <average wait time> <maximum wait queue length>
-        return String.format("%s %d", this.code, this.time) + this.getAirportSlots();
-    }
-
+    /**
+     * @return "{AirportCode}{hash(AirportCode)} {AirportCode}{hash(AirportCode)} ..."
+     */
     private String getAirportSlots() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 1000; i++) {
@@ -152,9 +156,5 @@ public class ACC {
             }
         }
         return sb.toString();
-    }
-
-    public String getCode() {
-        return code;
     }
 }

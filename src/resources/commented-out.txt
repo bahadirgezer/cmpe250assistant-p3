@@ -159,3 +159,6 @@
 
     wait completion -> reenter ready queue.
  */
+
+ !readyQue.isEmpty() || !waitQue.isEmpty()
+ false when both are empty

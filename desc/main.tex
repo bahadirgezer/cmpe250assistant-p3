@@ -19,7 +19,15 @@
                 positioning,
                 quotes,
                 shapes}
+\usepackage{xcolor}
 
+%\pagecolor[rgb]{0,0,0}
+%\pagecolor[rgb]{0.0549,0.0667,0.0862}
+
+\iffalse
+\pagecolor[rgb]{0.1269, 0.1369, 0.1469}
+\color[rgb]{1,1,1}
+\fi
 
 \newenvironment{subs}
   {\adjustwidth{3em}{0pt}}
@@ -78,20 +86,20 @@
     
 \begin{center}
 \begin{tikzpicture}[scale=1]
-    \draw[thick, color=black] (0,0) node[anchor=north] {{0}} -- (10,0);
-    \draw[thick, color=black] (0,0.5) -- (10,0.5);
-    \draw[thick, color=black] (0,0) -- (0,0.5);
-    %\draw[thick, color=black] (10,0) -- (10,0.5);
+    \draw[thick] (0,0) node[anchor=north] {{0}} -- (10,0);
+    \draw[thick] (0,0.5) -- (10,0.5);
+    \draw[thick] (0,0) -- (0,0.5);
+    %\draw[thick] (10,0) -- (10,0.5);
     
-    \draw[thick, ->] (0, 0.7) node[anchor=south] {\footnotesize{F1: 40t}} -- (0,0.5);
+    \draw[thick, ->] (0, 0.8) node[anchor=south] {\footnotesize{F1: 40t}} -- (0,0.6);
     
-    \draw[thick, ->] (2, 0.7) node[anchor=south] {\footnotesize{F2: 20t}} -- (2,0.5);
+    \draw[thick, ->] (2, 0.8) node[anchor=south] {\footnotesize{F2: 20t}} -- (2,0.6);
     
-    \draw[thick, ->] (4, 0.7) node[anchor=south] {\footnotesize{F3: 30t}} -- (4,0.5);
+    \draw[thick, ->] (4, 0.8) node[anchor=south] {\footnotesize{F3: 30t}} -- (4,0.6);
     
-    \draw[thick, ->] (5, 0.7) -- (5,0.5);
-    \draw[thick, ->] (7, 0.7) -- (7,0.5);
-    \draw[thick, ->] (8.5, 0.7) -- (8.5,0.5);
+    \draw[thick, ->] (5, 0.8) -- (5,0.6);
+    \draw[thick, ->] (7, 0.8) -- (7,0.6);
+    \draw[thick, ->] (8.5, 0.8) -- (8.5,0.6);
     
     \node[align=center] at (1.5,0.25) {\textbf{F1}};
     \node[align=center] at (4,0.25) {\textbf{F2}};
@@ -152,7 +160,7 @@
 
 %\draw[thick] (-7,-0.65) -- (8,-0.65) node[anchor=north] {ACC} node[anchor=south] {ATC};
 
-\draw[ultra thick, color=black, dash dot] (-5,-0.7) -- (6,-0.7) 
+\draw[ultra thick, dash dot] (-5,-0.7) -- (6,-0.7) 
 node[anchor=south east] {\textbf{ACC}} node[anchor=north east] {\textbf{ATC}};
 
 \begin{scope}[opacity=0.1]

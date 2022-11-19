@@ -22,29 +22,34 @@
 
 ## Encore Airlines
 
+#### Check the [description](./desc/p3_description.pdf) to try out this project.
 
     src/
     ├── main
     │   └── java
     │       ├── Project3.java
     │       ├── entities
-    │       │   ├── Airport.java
-    │       │   └── Flight.java
-    │       ├── enums
-    │       │   ├── ProcessorStatus.java
-    │       │   └── State.java
+    │       │   ├── Flight.java
+    │       │   └── FlightStatus.java
     │       └── processors
     │           ├── ACC.java
     │           └── ATC.java
     └── resources
     ├── codes.py
+    ├── commented-out.txt
     ├── data
+    │   ├── acc_codes.json
     │   ├── airport_codes.json
-    │   └── atc_codes.json
+    │   └── flight_codes.json
+    ├── images
+    │   └── states.png
     ├── input.py
-    └── inputs
+    ├── inputs
+    │   └── case0.in
+    └── outputs
+        └── case0.out
 
-[//]: # (#### Check the [description]&#40;./desc/p1_description.pdf&#41; to try out this project. )
+
 
 ### Implementation Notes
 

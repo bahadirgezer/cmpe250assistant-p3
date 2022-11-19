@@ -19,28 +19,31 @@ public class Flight implements Comparable<Flight> {
 
     /**
      * index -> time <br>
-     * 0 -> ACC initial processing time (r) <br> 21
-     * 1 -> Passing flight information to ACC time (w) <br> 20
-     * 2 -> ACC transfer control to ATC processing time (r) (ACC -> departure ATC) (ACC wait until ATC termination) <br> 19
-     * 3 -> initial ATC processing time (r) <br> 18
-     * 4 -> boarding wait time (w) <br> 17
-     * 5 -> taxi information processing time (r) <br> 16
-     * 6 -> taxi wait time (w) <br> 15
-     * 7 -> takeoff clearance processing time (r) <br> 14
-     * 8 -> takeoff && getting away from the ATC control area wait time (w) <br> 13
-     * 9 -> transfer control to ACC processing time (r) (departure ATC -> ACC) (departure ATC terminate) <br> 12
-     * 10 -> ACC take control back and flight path processing time (r) <br> 11
-     * 11 -> flight wait time (w) <br> 10
-     * 12 -> ACC transfer control to ATC processing time (r) (ACC -> ATC) (ACC wait until ATC termination) <br> 9
-     * 13 -> ATC initial processing time && runway information (r) <br> 8
-     * 14 -> flight landing wait time (w) <br> 7
-     * 15 -> taxi information processing time (r) <br> 6
-     * 16 -> taxi wait time (w) <br> 5
-     * 17 -> gate information processing time (r) <br> 4
-     * 18 -> disembark wait time (w) <br> 3
-     * 19 -> terminal processing time (r) (landing ATC -> ACC) (landing ATC terminate) <br> 2
-     * 20 -> ACC take control back && file flight record processing time (r) (ACC terminate) <br> 1
-     FINISHED <br> 0
+     * 0 -> ACC initial processing time (r) 21 <br>
+     * 1 -> Passing flight information to ACC time (w) 20 <br>
+     * 2 -> ACC transfer control to ATC processing time (r)
+     * (ACC -> departure ATC) (ACC wait until ATC termination) 19 <br>
+     * 3 -> initial ATC processing time (r) 18 <br>
+     * 4 -> boarding wait time (w) 17 <br>
+     * 5 -> taxi information processing time (r) 16 <br>
+     * 6 -> taxi wait time (w) 15 <br>
+     * 7 -> takeoff clearance processing time (r) 14 <br>
+     * 8 -> takeoff && getting away from the ATC control area wait time (w) 13 <br>
+     * 9 -> transfer control to ACC processing time (r)
+     * (departure ATC -> ACC) (departure ATC terminate) 12 <br>
+     * 10 -> ACC take control back and flight path processing time (r) 11 <br>
+     * 11 -> flight wait time (w) 10 <br>
+     * 12 -> ACC transfer control to ATC processing time (r)
+     * (ACC -> ATC) (ACC wait until ATC termination) 9 <br>
+     * 13 -> ATC initial processing time && runway information (r) 8 <br>
+     * 14 -> flight landing wait time (w) 7 <br>
+     * 15 -> taxi information processing time (r) 6 <br>
+     * 16 -> taxi wait time (w) 5 <br>
+     * 17 -> gate information processing time (r) 4 <br>
+     * 18 -> disembark wait time (w) 3 <br>
+     * 19 -> terminal processing time (r) (landing ATC -> ACC) (landing ATC terminate) 2 <br>
+     * 20 -> ACC take control back && file flight record processing time (r) (ACC terminate) 1 <br>
+     FINISHED 0 <br>
      */
     private final ArrayDeque<Integer> operationTimes;
 
@@ -116,19 +119,18 @@ public class Flight implements Comparable<Flight> {
         return status;
     }
 
-    public Integer getOperationTime() {
-        return operationTimes.peek();
-    }
-
     public Integer getReadyTime() {
         return readyTime;
     }
 
+    /**
+     * Smaller readyTime has higher priority, if ready times are the same, smaller code has higher priority.
+     *
+     * @param o the object to be compared.
+     * @return [0, 1, -1]
+     */
     @Override
     public int compareTo(Flight o) {
-        // smaller readyTime has higher priority, if ready times are the same, smaller code has higher priority
         return readyTime.equals(o.readyTime) ? code.compareTo(o.code) : readyTime.compareTo(o.readyTime);
     }
-
-
 }

@@ -46,6 +46,7 @@ public class Project3 {
             flights = new ArrayDeque<>(numFlights);
             accs = new HashMap<>(numACCs);
 
+            // Read ACCs
             for (int i = 0; i < numACCs; i++) {
                 if ((line = br.readLine()) == null) {
                     System.err.println("Exception caught: Input line could not be read.");
@@ -57,11 +58,12 @@ public class Project3 {
 
                 for (String airportCode : airportCodes) {
                     ATC atc = new ATC(acc, airportCode);
-                    acc.addATC(airportCode, atc);
+                    acc.addAtc(airportCode, atc);
                 }
                 accs.put(acc.getCode(), acc);
             }
 
+            // Read Flights
             for (int i = 0; i < numFlights; i++) {
                 if ((line = br.readLine()) == null) {
                     System.err.println("Exception caught: Input line could not be read.");
@@ -110,6 +112,8 @@ public class Project3 {
 
         /* Process */
         StringBuilder sb = new StringBuilder();
+
+        // distribute flights to ACCs
         while (!flights.isEmpty()) {
             Flight flight = flights.poll();
             ACC acc = accs.get(flight.getAccCode());
@@ -117,6 +121,7 @@ public class Project3 {
         }
         flights = null;
 
+        // process flights
         for (ACC acc : accs.values()) {
             acc.processFlights();
             sb.append(acc).append(System.lineSeparator());
