@@ -2,131 +2,122 @@ import json
 import random
 
 DESTINATION_DIRECTORY = "inputs"
-INPUT_NAME = "input"
+INPUT_NAME = "case"
 INPUT_EXTENSION = "in"
 
 
-class Airport:
+class ACC:
     def __init__(self, code: str) -> None:
         self.code: str = code
-        self.connections: set[Airport] = set()  # undirected graph
+        self.atcs: set[ATC] = set()
+        self.airport_table = [None] * 1000
+
+    def can_hash(self, airport_code: str) -> bool:
+        return self.hash(airport_code) != -1
+
+    def hash(self, airport_code: str) -> int:
+        str_val: int = (ord(airport_code[0]) + ord(airport_code[1]) * 31 + ord(airport_code[2]) * 31 * 31) % 1000
+        for _ in range(1000):
+            if self.airport_table[str_val] is None:
+                self.airport_table[str_val] = airport_code
+                self.atcs.add(ATC(airport_code, str_val, self.code))
+                return str_val
+            str_val = (str_val + 1) % 1000
+        return -1
+
+    # 2. Next <number of ACCs> lines: <ACC code> <airport code> <airport code> ... <airport code>
+    def __repr__(self) -> str:
+        return f"{self.code} {' '.join([atc.airport for atc in self.atcs])}"
+
+
+class ATC:
+    def __init__(self, airport_code: str, id_val: int, acc_code: str) -> None:
+        # id_val should have leading zeros
+        self.code: str = acc_code + str(id_val).zfill(3)
+        self.airport: str = airport_code
 
     def __repr__(self) -> str:
-        return "".join([self.code, " -> ", str(self.connections)])
+        return "".join(self.code)
 
+class Flight:
+    def __init__(self, admission_time: int, flight_code: str, acc_code: str,
+                 departure_airport_code: str, arrival_airport_code: str, opTimes: list[int]) -> None:
+
+        self.admission_time: int = admission_time
+        self.flight_code: str = flight_code
+        self.acc_code: str = acc_code
+        self.departure_airport_code: str = departure_airport_code
+        self.arrival_airport_code: str = arrival_airport_code
+        self.opTimes: list[int] = opTimes
+
+    # 3. Next <number of flights> lines: <admission time> <flight code> <ACC code> <departure airport code> <arrival airport code> <list of operation times>
+    def __repr__(self) -> str:
+        return f"{self.admission_time} {self.flight_code} {self.acc_code} {self.departure_airport_code} {self.arrival_airport_code} {' '.join([str(opTime) for opTime in self.opTimes])}"
 
 class Input:
-    def __init__(self, airport_count: int, flight_count: int, mode: str = "single") -> None:
-        self.airport_count = airport_count
-        self.flight_count = flight_count
-        self.__set_airports__(mode)
-        self.__set_flights__(mode)
+    def __init__(self, num_accs: int, num_flights: int, mode: str = "single") -> None:
+        self.num_accs = num_accs
+        self.num_flights = num_flights
         self.mode = mode
+        self.flights: list[Flight] = []
+        self.accs: list[ACC] = []
+        self.generate()
 
-    def create_airport(self) -> Airport:
-        airport_code: str = random.choice(list(self.airport_codes))
-        self.airport_codes.remove(airport_code)
-        return Airport(airport_code)
+    def generate(self) -> None:
+        # create accs
+        self.accs: list[ACC] = self.choose_accs()
+        airport_codes = set(json.loads(open("data/airport_codes.json", "r").read()))
+        for acc in self.accs:
+            # choose airport codes until at least two airports are hashed
+            while len(acc.atcs) < 2:
+                airport_code: str = random.choice(list(airport_codes))
+                if acc.can_hash(airport_code):
+                    airport_codes.remove(airport_code)
 
-    """
-        airport code : str (3 letters)
-        connections : list of tuples (airport code, distance)
-    """
+            for _ in range(random.randint(0, 200)):                                  # 2 - 202 airports/atcs per acc
+                airport_code: str = random.choice(list(airport_codes))
+                if acc.can_hash(airport_code):
+                    airport_codes.remove(airport_code)
 
-    def __set_airports__(self, mode: str):
-        # read airport codes from file json file named data/airport_codes.json
-        self.airport_codes = set(json.loads(open("data/airport_codes.json", "r").read()))
-        # create airport objects
-        self.airports: list[Airport] = [self.create_airport() for _ in range(self.airport_count)]
-        self.airports_dict: dict[str, Airport] = {airport.code: airport for airport in self.airports}
-        # connect airports based on mode. default is single
-        switcher = {
-            "random": self.connect_airports_random,
-            "single_cycle": self.connect_single_cycle,
-            "single_component": self.connect_single_component,
-            "sparse": self.connect_airports_loose,
-            "dense": self.connect_airports_tight,
-        }
-        switcher[mode]()
-        return self.airports
-
-    def connect_airports_random(self) -> list[Airport]:
-        airport: Airport
-        for airport in self.airports:
-            # airport.connections = set(random.sample(self.airports, random.randint(1, self.airport_count - 1)))
-            for _ in range(random.randint(1, self.airport_count - 1)):
-                random_airport = random.choice(self.airports)
-                if random_airport != airport:
-                    airport.connections.add(random_airport)
-                    random_airport.connections.add(airport)
-        return self.airports
-
-    def connect_single_cycle(self):
-        pass
-
-    def connect_single_component(self):
-        pass
-
-    """
-    # connected airports form a single connected component with one cycle
-    def connect_single_cycle(self, airports: list[Airport]) -> list[Airport]:
-        for airport_index in range(len(airports) - 1):
-            airports[airport_index].connections.add(airports[airport_index + 1])
-            airports[airport_index + 1].connections.add(airports[airport_index])
-        airports[0].connections.add(airports[-1])
-        airports[-1].connections.add(airports[0])
-        return airports
-
-    # connected airports form a single connected component without a cycle
-    def connect_single_component(self, airports: list[Airport]) -> list[Airport]:
-        for airport_index in range(len(airports) - 1):
-            airports[airport_index].connections.add(airports[airport_index + 1])
-            airports[airport_index + 1].connections.add(airports[airport_index])
-        airport_index = 1
-        while airport_index < self.airport_count - 1:
-            airports[airport_index].connections.add(airports[airport_index + 1])
-            airports[airport_index + 1].connections.add(airports[airport_index])
-            airport_index *= airport_index
-        airport_index = self.airport_count - 2
-        while airport_index > 1:
-            airports[airport_index].connections.add(airports[airport_index + 1])
-            airports[airport_index + 1].connections.add(airports[airport_index])
-            airport_index //= 2
-        return airports
-    """
-
-    # airports = comp * airport_in_comp
-    def connect_airports_loose(self) -> list[Airport]:
-        component_count: int = (self.airport_count // 20) + 1
-        for _ in range(component_count):
+        # create flights
+        flight_codes = set(json.loads(open("data/flight_codes.json", "r").read()))
+        for _ in range(self.num_flights):
+            acc: ACC = random.choice(list(self.accs))
+            departure_airport: str = random.choice(list(acc.atcs)).airport
+            while(True):
+                arrival_airport: str = random.choice(list(acc.atcs)).airport
+                if arrival_airport != departure_airport:
+                    break
+            admission_time: int = random.randint(0, 30 * self.num_flights)          # 0 - 30 * num_flights
+            # need empirical analysis to determine opTimes distribution
+            opTimes: list[int] = [random.randint(0, 500) for _ in range(21)]        # 21 opTimes per flight
+            flight_code: str = random.choice(list(flight_codes))
+            flight_codes.remove(flight_code)
+            self.flights.append(Flight(admission_time, flight_code, acc.code,
+                                       departure_airport, arrival_airport, opTimes))
             pass
-        return self.airports
 
-    def connect_airports_tight(self) -> list[Airport]:
-        component_count: int = (self.airport_count // 100) + 1
-        for _ in range(component_count):
-            pass
-        return self.airports
+        for acc in self.accs:
+            print(" ".join([str(atc) for atc in acc.atcs]))
+        return
 
-    def connect_airports_mixed(self) -> list[Airport]:
-        split_index: int = 3
-        while split_index < self.airport_count - 1:
+    def choose_accs(self) -> list[ACC]:
+        # load acc codes from data/acc_codes.json
+        acc_codes: list[str] = list(json.loads(open("data/acc_codes.json", "r").read()))
+        # choose random acc codes and create acc objects
+        return [ACC(code) for code in random.sample(acc_codes, self.num_accs)]
 
-            split_index *= split_index
-
-        return self.airports
-
-    def __set_flights__(self, mode: str):
-        pass
-
+    # 1. First line: <number of ACCs> <number of flights>
+    # 2. Next <number of ACCs> lines: <ACC code> <airport code> <airport code> ... <airport code>
+    # 3. Next <number of flights> lines: <admission time> <flight code> <ACC code> <departure airport code> <arrival airport code> <list of operation times>
     def __repr__(self):
-        return ""
-
+        return f"{self.num_accs} {self.num_flights}\n" + "\n".join([str(acc) for acc in self.accs]) + "\n" + "\n".join([str(flight) for flight in self.flights]) + "\n"
 
 if __name__ == "__main__":
-    for i in range(10):
+    for i in range(1):
+        print("generating input ", f"{DESTINATION_DIRECTORY}/{INPUT_NAME}{i}.{INPUT_EXTENSION}")
         file = open(f"{DESTINATION_DIRECTORY}/{INPUT_NAME}{i}.{INPUT_EXTENSION}", "w")
-        inn = Input(10, 10)
+        inn = Input(5, 100)
         file.write(str(inn))
         file.close()
 
