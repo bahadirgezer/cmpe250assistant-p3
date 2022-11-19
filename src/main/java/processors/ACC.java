@@ -4,7 +4,7 @@ import main.java.entities.Flight;
 
 import java.util.*;
 
-public class ACC { // Area Control Center // controls the area
+public class ACC {
 
     private final static int TIME_QUANTUM = 30;
 
@@ -20,21 +20,28 @@ public class ACC { // Area Control Center // controls the area
      * @value - ATC for that airport
      */
     private final HashMap<String, ATC> ATCs;
-    private final List<String> table = Arrays.asList(new String[1000]); // hash table for ATC codes
 
-    private final ArrayDeque<Flight> readyQue; // queue for flights ready to be processed
+    /**
+     * Hash table airports in this ACC <br>
+     */
+    private final List<String> table = Arrays.asList(new String[1000]);
 
-    private final PriorityQueue<Flight> waitQue; // queue for flights waiting to be ready
+    /**
+     * Queue for flights waiting to be processed <br>
+     */
+    private final ArrayDeque<Flight> readyQue;
 
-    private final ArrayDeque<ATC> busyATCs; // queue for ATCs busy with a flight
+    /**
+     * Queue for flights waiting to be ready <br>
+     */
+    private final PriorityQueue<Flight> waitQue;
+
+    /**
+     * List for occupied ATCs <br>
+     */
+    private final ArrayDeque<ATC> busyATCs;
 
     private Integer time;
-
-    private Integer maximumQueueSize;
-
-    private Integer totalWaitTime;
-
-    private Integer totalFlights;
 
     public ACC(String code) {
         this.code = code;
@@ -43,9 +50,6 @@ public class ACC { // Area Control Center // controls the area
         this.waitQue = new PriorityQueue<>();
         this.busyATCs = new ArrayDeque<>();
         this.time = 0;
-        this.maximumQueueSize = 0;
-        this.totalWaitTime = 0;
-        this.totalFlights = 0;
     }
 
     public void processFlights() {
@@ -53,9 +57,9 @@ public class ACC { // Area Control Center // controls the area
             return;
         readyQue.add(waitQue.poll());
 
+        assert readyQue.peek() != null;
         time = readyQue.peek().getReadyTime();
         while (!readyQue.isEmpty() || !waitQue.isEmpty()) {
-            maximumQueueSize = Math.max(maximumQueueSize, readyQue.size());
 
             Flight flight;
             int timeProcessed;
@@ -71,7 +75,6 @@ public class ACC { // Area Control Center // controls the area
                 time += timeProcessed;
                 admitFlights(time);
             }
-            maximumQueueSize = Math.max(maximumQueueSize, readyQue.size());
 
             for (ATC atc : busyATCs) {
                 atc.step(time);
@@ -94,7 +97,6 @@ public class ACC { // Area Control Center // controls the area
                     busyATCs.add(atc);
                     break;
                 case FINISHED:
-                    totalFlights++;
                     break;
             }
         }
@@ -116,13 +118,12 @@ public class ACC { // Area Control Center // controls the area
      * ATC code generator.
      *
      * @param airportCode - Airport code
-     * @return ATC code : {ACC Code} + {Hashed Airport Code}
      */
-    public String generateAtcCode(String airportCode) { // return "{AccCode}{hash(AirportCode)"
-        return this.code + hashAirportCode(airportCode);
+    public void generateAtcCode(String airportCode) { // return "{AccCode}{hash(AirportCode)"
+        hashAirportCode(airportCode);
     }
 
-    private String hashAirportCode(String airportCode) {
+    private void hashAirportCode(String airportCode) {
         int val = (int)airportCode.charAt(0) + (int)airportCode.charAt(1) * 31 + (int)airportCode.charAt(2) * 31 * 31; // ASCII values
         int i = 0;
         val %= 1000;
@@ -131,7 +132,7 @@ public class ACC { // Area Control Center // controls the area
             i++;
         }
         table.set(val, airportCode);
-        return String.format("%03d", val);
+        // return String.format("%03d", val);
     }
 
     public void addATC(String airportCode, ATC atc) {
@@ -157,4 +158,3 @@ public class ACC { // Area Control Center // controls the area
         return code;
     }
 }
-

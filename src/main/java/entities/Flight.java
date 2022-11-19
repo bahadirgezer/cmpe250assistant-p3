@@ -1,10 +1,7 @@
 package main.java.entities;
 
-import main.java.enums.FlightStatus;
-
 import java.util.AbstractMap;
 import java.util.ArrayDeque;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Flight implements Comparable<Flight> {

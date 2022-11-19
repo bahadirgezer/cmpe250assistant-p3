@@ -12,36 +12,25 @@ import java.util.PriorityQueue;
  */
 public class ATC {
 
-    /**
-     * @id - ATC code <br>
-     * <br>
-     * 7 characters: <br>
-     * 4 capital letters [AAAA-ZZZZ] + 3 digits [000-999] <br>
-     * <br>
-     * 4 capital letters come from the ACC <br>
-     * 3 digits come from hash function which the takes the airport code as input
-     */
-    private final String code;
-
-    /**
-     * @key - Flight code <br>
-     * @value - Flight object
-     */
     private final ACC acc;
 
-    private final ArrayDeque<Flight> readyQue; // queue for flights ready to be processed
+    /**
+     * Queue for flights waiting to be processed <br>
+     */
+    private final ArrayDeque<Flight> readyQue;
 
-    private final PriorityQueue<Flight> waitQue; // queue for flights waiting to be ready
+    /**
+     * Queue for flights waiting to be ready <br>
+     */
+    private final PriorityQueue<Flight> waitQue;
 
     public ATC(ACC acc, String airportCode) {
         this.acc = acc;
-        this.code = acc.generateAtcCode(airportCode);
+        acc.generateAtcCode(airportCode);
         this.readyQue = new ArrayDeque<>();
         this.waitQue = new PriorityQueue<>();
     }
 
-
-    // run the ATC for untilTime seconds
     public void step(int untilTime) {
         Integer time;
         while (!readyQue.isEmpty() || !waitQue.isEmpty()) {
