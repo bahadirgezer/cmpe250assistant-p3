@@ -74,7 +74,7 @@ class Input:
                 if acc.can_hash(airport_code):
                     airport_codes.remove(airport_code)
 
-            for _ in range(random.randint(0, 200)):                                  # 2 - 202 airports/atcs per acc
+            for _ in range(random.randint(0, 5)):                                  # 2 - 202 airports/atcs per acc
                 airport_code: str = random.choice(list(airport_codes))
                 if acc.can_hash(airport_code):
                     airport_codes.remove(airport_code)
@@ -117,7 +117,7 @@ if __name__ == "__main__":
     for i in range(1):
         print("generating input ", f"{DESTINATION_DIRECTORY}/{INPUT_NAME}{i}.{INPUT_EXTENSION}")
         file = open(f"{DESTINATION_DIRECTORY}/{INPUT_NAME}{i}.{INPUT_EXTENSION}", "w")
-        inn = Input(5, 100)
+        inn = Input(3, 5)
         file.write(str(inn))
         file.close()
 

@@ -130,7 +130,7 @@ public class Project3 {
 
         for (ACC acc : accs.values()) {
             acc.processFlights();
-            sb.append(acc);
+            sb.append(acc).append(System.lineSeparator());
         }
         accs = null;
         /* End of Process */

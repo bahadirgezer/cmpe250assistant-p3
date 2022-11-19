@@ -30,6 +30,12 @@ public class ACC { // Area Control Center // controls the area
 
     private Integer time;
 
+    private Integer maximumQueueSize;
+
+    private Integer totalWaitTime;
+
+    private Integer totalFlights;
+
     public ACC(String code) {
         this.code = code;
         this.ATCs = new HashMap<>();
@@ -37,6 +43,9 @@ public class ACC { // Area Control Center // controls the area
         this.waitQue = new PriorityQueue<>();
         this.busyATCs = new ArrayDeque<>();
         this.time = 0;
+        this.maximumQueueSize = 0;
+        this.totalWaitTime = 0;
+        this.totalFlights = 0;
     }
 
     public void processFlights() {
@@ -46,18 +55,23 @@ public class ACC { // Area Control Center // controls the area
 
         time = readyQue.peek().getReadyTime();
         while (!readyQue.isEmpty() || !waitQue.isEmpty()) {
+            maximumQueueSize = Math.max(maximumQueueSize, readyQue.size());
 
             Flight flight;
+            int timeProcessed;
             if (!readyQue.isEmpty()) {
                 flight = readyQue.pop();
-                time += flight.process(TIME_QUANTUM);
+                timeProcessed = flight.process(TIME_QUANTUM);
+                time += timeProcessed;
                 admitFlights(time);
             } else {
                 flight = waitQue.poll();
                 time = flight.getReadyTime();
-                time += flight.process(TIME_QUANTUM);
+                timeProcessed = flight.process(TIME_QUANTUM);
+                time += timeProcessed;
                 admitFlights(time);
             }
+            maximumQueueSize = Math.max(maximumQueueSize, readyQue.size());
 
             for (ATC atc : busyATCs) {
                 atc.step(time);
@@ -80,6 +94,7 @@ public class ACC { // Area Control Center // controls the area
                     busyATCs.add(atc);
                     break;
                 case FINISHED:
+                    totalFlights++;
                     break;
             }
         }
@@ -124,7 +139,18 @@ public class ACC { // Area Control Center // controls the area
     }
 
     public String toString() {
-        return "";
+        // <acc code> <time> <average wait time> <maximum wait queue length>
+        return String.format("%s %d", this.code, this.time) + this.getAirportSlots();
+    }
+
+    private String getAirportSlots() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 1000; i++) {
+            if (table.get(i) != null) {
+                sb.append(String.format(" %s%03d", table.get(i), i));
+            }
+        }
+        return sb.toString();
     }
 
     public String getCode() {
