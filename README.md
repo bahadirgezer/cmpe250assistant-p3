@@ -29,25 +29,20 @@
     │   └── java
     │       ├── Project3.java
     │       ├── entities
-    │       │   ├── Flight.java
-    │       │   └── FlightStatus.java
+    │       │   ├── Event.java
+    │       │   └── Flight.java
     │       └── processors
     │           ├── ACC.java
-    │           └── ATC.java
+    │           ├── ATC.java
+    │           └── DES.java
     └── resources
     ├── codes.py
-    ├── commented-out.txt
     ├── data
     │   ├── acc_codes.json
     │   ├── airport_codes.json
     │   └── flight_codes.json
-    ├── images
-    │   └── states.png
     ├── input.py
-    ├── inputs
-    │   └── case0.in
-    └── outputs
-        └── case0.out
+    └── outputs,py
 
 
 
