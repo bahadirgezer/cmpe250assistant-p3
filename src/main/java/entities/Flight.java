@@ -1,23 +1,23 @@
 package main.java.entities;
 
+import main.java.processors.ACC;
+
 import java.util.AbstractMap;
 import java.util.ArrayDeque;
 import java.util.Map;
 
-public class Flight implements Comparable<Flight> {
-
-    private Integer readyTime;
-    private Integer entryTime;
+public class Flight {
 
     /**
      * @id - Flight code <br>
      */
     private final String code;
+
+    private final Integer entryTime;
     private final String accCode;
+
     private final String origin;
     private final String destination;
-    private FlightStatus status;
-
     /**
      * index -> time <br>
      * 0 -> ACC initial processing time (r) 21 <br>
@@ -48,32 +48,6 @@ public class Flight implements Comparable<Flight> {
      */
     private final ArrayDeque<Integer> operationTimes;
 
-    // <key, value> -> <operationTimes.size(), FlightStatus>
-    private static final Map<Integer, FlightStatus> map = Map.ofEntries(
-            new AbstractMap.SimpleEntry<>(0, FlightStatus.FINISHED),
-            new AbstractMap.SimpleEntry<>(1, FlightStatus.READY),
-            new AbstractMap.SimpleEntry<>(2, FlightStatus.LANDING_END),
-            new AbstractMap.SimpleEntry<>(3, FlightStatus.WAITING),
-            new AbstractMap.SimpleEntry<>(4, FlightStatus.READY),
-            new AbstractMap.SimpleEntry<>(5, FlightStatus.WAITING),
-            new AbstractMap.SimpleEntry<>(6, FlightStatus.READY),
-            new AbstractMap.SimpleEntry<>(7, FlightStatus.WAITING),
-            new AbstractMap.SimpleEntry<>(8, FlightStatus.LANDING_BEGIN),
-            new AbstractMap.SimpleEntry<>(9, FlightStatus.READY),
-            new AbstractMap.SimpleEntry<>(10, FlightStatus.WAITING),
-            new AbstractMap.SimpleEntry<>(11, FlightStatus.READY),
-            new AbstractMap.SimpleEntry<>(12, FlightStatus.TAKEOFF_END),
-            new AbstractMap.SimpleEntry<>(13, FlightStatus.WAITING),
-            new AbstractMap.SimpleEntry<>(14, FlightStatus.READY),
-            new AbstractMap.SimpleEntry<>(15, FlightStatus.WAITING),
-            new AbstractMap.SimpleEntry<>(16, FlightStatus.READY),
-            new AbstractMap.SimpleEntry<>(17, FlightStatus.WAITING),
-            new AbstractMap.SimpleEntry<>(18, FlightStatus.TAKEOFF_BEGIN),
-            new AbstractMap.SimpleEntry<>(19, FlightStatus.READY),
-            new AbstractMap.SimpleEntry<>(20, FlightStatus.WAITING),
-            new AbstractMap.SimpleEntry<>(21, FlightStatus.READY)
-    );
-
     public Flight(int admissionTime,
                   String code,
                   String accCode,
@@ -81,62 +55,44 @@ public class Flight implements Comparable<Flight> {
                   String destination,
                   ArrayDeque<Integer> operationTimes) {
 
-        this.readyTime = admissionTime;
         this.code = code;
         this.accCode = accCode;
         this.origin = origin;
         this.destination = destination;
         this.operationTimes = operationTimes;
-        this.status = FlightStatus.READY;
         this.entryTime = admissionTime;
     }
 
-    public int process(int timeQuantum, int startTime) {
-        int remainingTime = operationTimes.pop();
-        if (remainingTime > timeQuantum) {
-            remainingTime -= timeQuantum;
-            operationTimes.push(remainingTime);
-            return timeQuantum;
-        } else {
-            status = map.get(operationTimes.size());
-            if (status == FlightStatus.WAITING)
-                readyTime = startTime + operationTimes.peek() + remainingTime;
-            return remainingTime;
-        }
+    public String getCode() {
+        return code;
+    }
+
+    public String getDeparture() {
+        return origin;
+    }
+
+    public String getArrival() {
+        return destination;
+    }
+
+    public int getEntryTime() {
+        return entryTime;
     }
 
     public String getAccCode() {
         return accCode;
     }
 
-    public String getOrigin() {
-        return origin;
+    public Integer getTime() {
+        return operationTimes.pop();
     }
 
-    public String getDestination() {
-        return destination;
+    public void setTime(int time) {
+        if (time > 0)
+            operationTimes.push(time);
     }
 
-    public FlightStatus getStatus() {
-        return status;
-    }
-
-    public Integer getReadyTime() {
-        return readyTime;
-    }
-
-    /**
-     * Smaller readyTime has higher priority, if ready times are the same, smaller code has higher priority.
-     *
-     * @param o the object to be compared.
-     * @return [0, 1, -1]
-     */
-    @Override
-    public int compareTo(Flight o) {
-        return readyTime.equals(o.readyTime) ? code.compareTo(o.code) : readyTime.compareTo(o.readyTime);
-    }
-
-    public int getEntryTime() {
-        return entryTime;
+    public Integer getOperationCount() {
+        return operationTimes.size();
     }
 }

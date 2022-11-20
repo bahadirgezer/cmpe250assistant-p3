@@ -6,13 +6,19 @@ import main.java.entities.Flight;
 
 import java.util.PriorityQueue;
 
+import static main.java.Project3.flights;
+import static main.java.Project3.accs;
+
 public class DES {
 
-    private final static int TIME_QUANTUM = 30;
+    public final static int TIME_QUANTUM = 30;
     private static PriorityQueue<Event> eventQueue;
 
     public DES() {
         eventQueue = new PriorityQueue<>();
+        while (!flights.isEmpty())
+            addFlight(flights.poll());
+
     }
 
     public void addFlight(Flight flight) {
@@ -27,5 +33,4 @@ public class DES {
                 eventQueue.add(nextEvent);
         }
     }
-
 }

@@ -1,12 +1,10 @@
 package main.java.processors;
 
-import main.java.entities.Flight;
-
-import java.util.*;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Arrays;
 public class ACC {
-
-    private final static int TIME_QUANTUM = 30;
+    private Integer time;
 
     /**
      * @id - ACC code <br>
@@ -19,116 +17,37 @@ public class ACC {
      * @key - Airport code
      * @value - ATC for that airport
      */
-    private final HashMap<String, ATC> ATCs;
+    private final HashMap<String, ATC> atcs;
 
     /**
      * Hash table airports in this ACC <br>
      */
     private final List<String> table = Arrays.asList(new String[1000]);
 
-    /**
-     * Queue for flights waiting to be processed <br>
-     */
-    private final ArrayDeque<Flight> readyQue;
-
-    /**
-     * Queue for flights waiting to be ready <br>
-     */
-    private final PriorityQueue<Flight> waitQue;
-
-    /**
-     * List for occupied ATCs <br>
-     */
-    private final ArrayDeque<ATC> busyATCs;
-
-    private Integer time;
-
     public ACC(String code) {
         this.code = code;
-        this.ATCs = new HashMap<>();
-        this.readyQue = new ArrayDeque<>();
-        this.waitQue = new PriorityQueue<>();
-        this.busyATCs = new ArrayDeque<>();
+        this.atcs = new HashMap<>();
         this.time = 0;
     }
 
-    public void processFlights() {
-        if (waitQue.isEmpty())
-            return; // No flights to process
-        readyQue.add(waitQue.poll());
-
-        assert readyQue.peek() != null;
-        time = readyQue.peek().getReadyTime();
-        while (!readyQue.isEmpty() || !waitQue.isEmpty() || !busyATCs.isEmpty()) {
-            Flight flight;
-            if (readyQue.isEmpty() && waitQue.isEmpty()) {
-                /*
-                Flight earliestFlight = null;
-                int earliestTime = Integer.MAX_VALUE;
-
-                for (ATC atc : busyATCs) {
-                    atc.stepUntilFree(time);
-                    if (atc.isFree())
-                        busyATCs.remove(atc);
-                }
-                continue;
-                */
-            }
-
-            if (!readyQue.isEmpty()) {
-                flight = readyQue.pop();
-            } else {
-                flight = waitQue.poll();
-                time = flight.getReadyTime();
-            }
-
-            int timeProcessed = flight.process(TIME_QUANTUM, time);
-            time += timeProcessed;
-            admitFlights(time);
-
-            /*
-            for (ATC atc : busyATCs) {
-                atc.step(time-timeProcessed, time);
-                if (atc.isFree())
-                    busyATCs.remove(atc);
-            }
-            */
-
-            switch (flight.getStatus()) {
-                case READY:
-                    readyQue.add(flight);
-                    break;
-                case WAITING:
-                    waitQue.add(flight);
-                    break;
-                case TAKEOFF_BEGIN:
-                    ATC takeoff = ATCs.get(flight.getOrigin());
-                    takeoff.addFlight(flight);
-                    busyATCs.add(takeoff);
-                    break;
-                case LANDING_BEGIN:
-                    ATC landing = ATCs.get(flight.getDestination());
-                    landing.addFlight(flight);
-                    busyATCs.add(landing);
-                    break;
-                case FINISHED:
-                    break;
-            }
-        }
-    }
-
-    private void admitFlights(Integer untilTime) {
-        while (!waitQue.isEmpty() &&
-                waitQue.peek().getReadyTime() <= untilTime)
-            readyQue.add(Objects.requireNonNull(waitQue.poll()));
-    }
-
     public void addAtc(String airportCode, ATC atc) {
-        this.ATCs.put(airportCode, atc);
+        this.atcs.put(airportCode, atc);
     }
 
-    public void addFlight(Flight flight) {
-        waitQue.add(flight);
+    public Integer getTime() {
+        return time;
+    }
+
+    public void setTime(int end) {
+        this.time = end;
+    }
+
+    public Integer getAtcTime(String atcCode) {
+        return atcs.get(atcCode).getTime();
+    }
+
+    public void setAtcTime(String atcCode, int time) {
+        atcs.get(atcCode).setTime(time);
     }
 
     public String getCode() {

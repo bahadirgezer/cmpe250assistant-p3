@@ -3,6 +3,7 @@ package main.java;
 import main.java.entities.Flight;
 import main.java.processors.ACC;
 import main.java.processors.ATC;
+import main.java.processors.DES;
 
 import java.io.*;
 import java.util.*;
@@ -16,9 +17,9 @@ public class Project3 {
      * @key - ACC code
      * @value - ACC object
      */
-    private static HashMap<String, ACC> accs;
+    public static HashMap<String, ACC> accs;
 
-    private static ArrayDeque<Flight> flights;
+    public static ArrayDeque<Flight> flights;
 
     public static void main(String[] args) { // discrete event simulation project.
 
@@ -111,22 +112,14 @@ public class Project3 {
         /* End of Input */
 
         /* Process */
+        DES simulation = new DES();
+        simulation.run();
         StringBuilder sb = new StringBuilder();
-
-        // distribute flights to ACCs
-        while (!flights.isEmpty()) {
-            Flight flight = flights.poll();
-            ACC acc = accs.get(flight.getAccCode());
-            acc.addFlight(flight);
-        }
-        flights = null;
-
-        // process flights
         for (ACC acc : accs.values()) {
-            acc.processFlights();
-            sb.append(acc).append(System.lineSeparator());
+            sb.append(acc.toString())
+                    .append(System.lineSeparator());
         }
-        accs = null;
+
         /* End of Process */
 
         /* Output */
