@@ -22,7 +22,7 @@
 
 ## Encore Airlines
 
-#### Check the [description](./desc/p3_description.pdf) to try out this project.
+#### Check the [description](./desc/p3_description_dark.pdf) to try out this project.
 
     src/
     ├── main
