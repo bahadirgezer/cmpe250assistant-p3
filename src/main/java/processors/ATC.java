@@ -24,6 +24,8 @@ public class ATC {
      */
     private final PriorityQueue<Flight> waitQue;
 
+    private Integer earliestFinishTime;
+
     public ATC(ACC acc, String airportCode) {
         this.acc = acc;
         acc.generateAtcCode(airportCode);
@@ -31,18 +33,17 @@ public class ATC {
         this.waitQue = new PriorityQueue<>();
     }
 
-    public void step(int untilTime) {
-        Integer time;
+    public void step(int time, int untilTime) {
         while (!readyQue.isEmpty() || !waitQue.isEmpty()) {
             Flight flight;
-            int timeProcessed;
-            if (!readyQue.isEmpty())
+            if (!readyQue.isEmpty()) {
                 flight = readyQue.pop();
-            else
+            } else {
                 flight = waitQue.poll();
+                time = flight.getReadyTime();
+            }
 
-            time = flight.getReadyTime();
-            timeProcessed = flight.process(untilTime);
+            int timeProcessed = flight.process(untilTime, time);
             time += timeProcessed;
             untilTime -= timeProcessed;
             admitFlights(time);

@@ -57,22 +57,42 @@ public class ACC {
             return; // No flights to process
         readyQue.add(waitQue.poll());
 
-        while (!readyQue.isEmpty() || !waitQue.isEmpty()) {
+        assert readyQue.peek() != null;
+        time = readyQue.peek().getReadyTime();
+        while (!readyQue.isEmpty() || !waitQue.isEmpty() || !busyATCs.isEmpty()) {
             Flight flight;
-            if (!readyQue.isEmpty())
+            if (readyQue.isEmpty() && waitQue.isEmpty()) {
+                /*
+                Flight earliestFlight = null;
+                int earliestTime = Integer.MAX_VALUE;
+
+                for (ATC atc : busyATCs) {
+                    atc.stepUntilFree(time);
+                    if (atc.isFree())
+                        busyATCs.remove(atc);
+                }
+                continue;
+                */
+            }
+
+            if (!readyQue.isEmpty()) {
                 flight = readyQue.pop();
-            else
+            } else {
                 flight = waitQue.poll();
-            time = flight.getReadyTime();
-            int timeProcessed = flight.process(TIME_QUANTUM);
+                time = flight.getReadyTime();
+            }
+
+            int timeProcessed = flight.process(TIME_QUANTUM, time);
             time += timeProcessed;
             admitFlights(time);
 
+            /*
             for (ATC atc : busyATCs) {
-                atc.step(time);
+                atc.step(time-timeProcessed, time);
                 if (atc.isFree())
                     busyATCs.remove(atc);
             }
+            */
 
             switch (flight.getStatus()) {
                 case READY:

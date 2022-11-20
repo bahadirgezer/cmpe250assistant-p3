@@ -7,6 +7,7 @@ import java.util.Map;
 public class Flight implements Comparable<Flight> {
 
     private Integer readyTime;
+    private Integer entryTime;
 
     /**
      * @id - Flight code <br>
@@ -48,7 +49,7 @@ public class Flight implements Comparable<Flight> {
     private final ArrayDeque<Integer> operationTimes;
 
     // <key, value> -> <operationTimes.size(), FlightStatus>
-    private final Map<Integer, FlightStatus> map = Map.ofEntries(
+    private static final Map<Integer, FlightStatus> map = Map.ofEntries(
             new AbstractMap.SimpleEntry<>(0, FlightStatus.FINISHED),
             new AbstractMap.SimpleEntry<>(1, FlightStatus.READY),
             new AbstractMap.SimpleEntry<>(2, FlightStatus.LANDING_END),
@@ -87,20 +88,21 @@ public class Flight implements Comparable<Flight> {
         this.destination = destination;
         this.operationTimes = operationTimes;
         this.status = FlightStatus.READY;
+        this.entryTime = admissionTime;
     }
 
-    public int process(int timeQuantum) {
+    public int process(int timeQuantum, int startTime) {
         int remainingTime = operationTimes.pop();
         if (remainingTime > timeQuantum) {
             remainingTime -= timeQuantum;
             operationTimes.push(remainingTime);
             return timeQuantum;
         } else {
-            readyTime += operationTimes.peek();
             status = map.get(operationTimes.size());
+            if (status == FlightStatus.WAITING)
+                readyTime = startTime + operationTimes.peek() + remainingTime;
             return remainingTime;
         }
-
     }
 
     public String getAccCode() {
@@ -132,5 +134,9 @@ public class Flight implements Comparable<Flight> {
     @Override
     public int compareTo(Flight o) {
         return readyTime.equals(o.readyTime) ? code.compareTo(o.code) : readyTime.compareTo(o.readyTime);
+    }
+
+    public int getEntryTime() {
+        return entryTime;
     }
 }
