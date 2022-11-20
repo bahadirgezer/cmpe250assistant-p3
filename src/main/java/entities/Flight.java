@@ -18,6 +18,7 @@ public class Flight {
 
     private final String origin;
     private final String destination;
+
     /**
      * index -> time <br>
      * 0 -> ACC initial processing time (r) 21 <br>

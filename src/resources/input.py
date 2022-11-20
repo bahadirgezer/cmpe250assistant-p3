@@ -4,6 +4,7 @@ import random
 DESTINATION_DIRECTORY = "inputs"
 INPUT_NAME = "case"
 INPUT_EXTENSION = "in"
+AIRPORTS_PER_ACC = 10
 
 
 class ACC:
@@ -39,10 +40,10 @@ class ATC:
     def __repr__(self) -> str:
         return "".join(self.code)
 
+
 class Flight:
     def __init__(self, admission_time: int, flight_code: str, acc_code: str,
                  departure_airport_code: str, arrival_airport_code: str, opTimes: list[int]) -> None:
-
         self.admission_time: int = admission_time
         self.flight_code: str = flight_code
         self.acc_code: str = acc_code
@@ -53,6 +54,7 @@ class Flight:
     # 3. Next <number of flights> lines: <admission time> <flight code> <ACC code> <departure airport code> <arrival airport code> <list of operation times>
     def __repr__(self) -> str:
         return f"{self.admission_time} {self.flight_code} {self.acc_code} {self.departure_airport_code} {self.arrival_airport_code} {' '.join([str(opTime) for opTime in self.opTimes])}"
+
 
 class Input:
     def __init__(self, num_accs: int, num_flights: int, mode: str = "single") -> None:
@@ -74,7 +76,8 @@ class Input:
                 if acc.can_hash(airport_code):
                     airport_codes.remove(airport_code)
 
-            for _ in range(random.randint(0, 5)):                                  # 2 - 202 airports/atcs per acc
+            for _ in range(random.randint(0, AIRPORTS_PER_ACC)):  # 2 - 202
+                # airports/atcs per acc
                 airport_code: str = random.choice(list(airport_codes))
                 if acc.can_hash(airport_code):
                     airport_codes.remove(airport_code)
@@ -84,13 +87,13 @@ class Input:
         for _ in range(self.num_flights):
             acc: ACC = random.choice(list(self.accs))
             departure_airport: str = random.choice(list(acc.atcs)).airport
-            while(True):
+            while (True):
                 arrival_airport: str = random.choice(list(acc.atcs)).airport
                 if arrival_airport != departure_airport:
                     break
-            admission_time: int = random.randint(0, 30 * self.num_flights)          # 0 - 30 * num_flights
+            admission_time: int = random.randint(0, 30 * self.num_flights)  # 0 - 30 * num_flights
             # need empirical analysis to determine opTimes distribution
-            opTimes: list[int] = [random.randint(0, 500) for _ in range(21)]        # 21 opTimes per flight
+            opTimes: list[int] = [random.randint(0, 500) for _ in range(21)]  # 21 opTimes per flight
             flight_code: str = random.choice(list(flight_codes))
             flight_codes.remove(flight_code)
             self.flights.append(Flight(admission_time, flight_code, acc.code,
@@ -107,17 +110,21 @@ class Input:
         # choose random acc codes and create acc objects
         return [ACC(code) for code in random.sample(acc_codes, self.num_accs)]
 
-    # 1. First line: <number of ACCs> <number of flights>
-    # 2. Next <number of ACCs> lines: <ACC code> <airport code> <airport code> ... <airport code>
-    # 3. Next <number of flights> lines: <admission time> <flight code> <ACC code> <departure airport code> <arrival airport code> <list of operation times>
+    # 1. First line: <number of ACCs> <number of flights> 2. Next <number of ACCs> lines: <ACC code> <airport code>
+    # <airport code> ... <airport code> 3. Next <number of flights> lines: <admission time> <flight code> <ACC code>
+    # <departure airport code> <arrival airport code> <list of operation times>
     def __repr__(self):
-        return f"{self.num_accs} {self.num_flights}\n" + "\n".join([str(acc) for acc in self.accs]) + "\n" + "\n".join([str(flight) for flight in self.flights]) + "\n"
+        return f"{self.num_accs} {self.num_flights}\n" + "\n".join([str(acc) for acc in self.accs]) + "\n" + "\n".join(
+            [str(flight) for flight in self.flights]) + "\n"
+
 
 if __name__ == "__main__":
-    for i in range(1):
+    inn = 10
+    too = 5
+    for i in range(inn, inn + too):
         print("generating input ", f"{DESTINATION_DIRECTORY}/{INPUT_NAME}{i}.{INPUT_EXTENSION}")
         file = open(f"{DESTINATION_DIRECTORY}/{INPUT_NAME}{i}.{INPUT_EXTENSION}", "w")
-        inn = Input(3, 5)
+        inn = Input(5, 100)
         file.write(str(inn))
         file.close()
 
