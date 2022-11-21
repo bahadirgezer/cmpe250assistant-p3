@@ -7,7 +7,6 @@ import main.java.entities.Flight;
 import java.util.PriorityQueue;
 
 import static main.java.Project3.flights;
-import static main.java.Project3.accs;
 
 public class DES {
 
@@ -21,7 +20,7 @@ public class DES {
 
     }
 
-    public void addFlight(Flight flight) {
+    private void addFlight(Flight flight) {
         eventQueue.add(new Event(flight.getEntryTime(), flight));
     }
 

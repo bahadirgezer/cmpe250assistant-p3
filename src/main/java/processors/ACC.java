@@ -3,25 +3,12 @@ package main.java.processors;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Arrays;
+
 public class ACC {
+
     private Integer time;
-
-    /**
-     * @id - ACC code <br>
-     * 4 capital letters [A-Z]
-     */
     private final String code;
-
-    /**
-     * List of ATCs assigned to this ACC <br>
-     * @key - Airport code
-     * @value - ATC for that airport
-     */
     private final HashMap<String, ATC> atcs;
-
-    /**
-     * Hash table airports in this ACC <br>
-     */
     private final List<String> table = Arrays.asList(new String[1000]);
 
     public ACC(String code) {
@@ -30,8 +17,8 @@ public class ACC {
         this.time = 0;
     }
 
-    public void addAtc(String airportCode, ATC atc) {
-        this.atcs.put(airportCode, atc);
+    public String getCode() {
+        return code;
     }
 
     public Integer getTime() {
@@ -42,6 +29,10 @@ public class ACC {
         this.time = end;
     }
 
+    public void addAtc(String airportCode, ATC atc) {
+        this.atcs.put(airportCode, atc);
+    }
+
     public Integer getAtcTime(String atcCode) {
         return atcs.get(atcCode).getTime();
     }
@@ -50,31 +41,10 @@ public class ACC {
         atcs.get(atcCode).setTime(time);
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    /**
-     * @return "{acc code} {time} {average wait time} {maximum wait queue length}"
-     */
-    public String toString() {
-        return String.format("%s %d", this.code, this.time) + this.getAirportSlots();
-    }
-
-    /**
-     * ATC code generator.
-     *
-     * @param airportCode - Airport code
-     */
-    public void generateAtcCode(String airportCode) { // return "{AccCode}{hash(AirportCode)"
-        hashAirportCode(airportCode);
-    }
-
-    private void hashAirportCode(String airportCode) {
+    public void generateAtcCode(String airportCode) {
         int val = (int)airportCode.charAt(0) +
                 (int)airportCode.charAt(1) * 31 +
                 (int)airportCode.charAt(2) * 31 * 31; // ASCII value hash function
-
         int i = 0;
         val %= 1000;
         while (table.get(val) != null) { // collision, linear probing
@@ -95,5 +65,13 @@ public class ACC {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * @return "{acc code} {time} {average wait time} {maximum wait queue length}"
+     */
+    @Override
+    public String toString() {
+        return String.format("%s %d", this.code, this.time) + this.getAirportSlots();
     }
 }

@@ -8,6 +8,7 @@ import static main.java.Project3.accs;
 import static main.java.processors.DES.TIME_QUANTUM;
 
 public class Event implements Comparable<Event> {
+
     private final Integer time;
     private final Flight flight;
 
@@ -21,7 +22,7 @@ public class Event implements Comparable<Event> {
         int start, runTime, end, opTime;
         String atcCode;
         switch (flight.getOperationCount()) {
-            case 21, 19, 11, 9, 1 -> {
+            case 21, 19, 11, 9, 1 -> { // ACC -Running
                 start = max(time, acc.getTime());
                 opTime = flight.getTime();
                 runTime = min(opTime, TIME_QUANTUM);
@@ -30,12 +31,12 @@ public class Event implements Comparable<Event> {
                 flight.setTime(opTime - runTime);
                 return new Event(end, flight);
             }
-            case 20, 17, 15, 13, 10, 7, 5, 3 -> {
+            case 20, 17, 15, 13, 10, 7, 5, 3 -> { // Waiting
                 end = time + flight.getTime();
                 flight.setTime(0);
                 return new Event(end, flight);
             }
-            case 18, 16, 14, 12 -> {
+            case 18, 16, 14, 12 -> { // ATC Departure - Running
                 atcCode = flight.getDeparture();
                 start = max(time, acc.getAtcTime(atcCode));
                 opTime = flight.getTime();
@@ -44,7 +45,7 @@ public class Event implements Comparable<Event> {
                 flight.setTime(0);
                 return new Event(end, flight);
             }
-            case 8, 6, 4, 2 -> {
+            case 8, 6, 4, 2 -> { // ATC Arrival - Running
                 atcCode = flight.getArrival();
                 start = max(time, acc.getAtcTime(atcCode));
                 opTime = flight.getTime();
@@ -53,16 +54,17 @@ public class Event implements Comparable<Event> {
                 flight.setTime(0);
                 return new Event(end, flight);
             }
-            case 0 -> {
+            case 0 -> { // Finished
                 acc.setTime(time);
                 return null;
             }
-            default -> throw new IllegalStateException("Unexpected value: " + flight.getOperationCount());
+            default -> throw new IllegalStateException(
+                    "Unexpected value: " + flight.getOperationCount());
         }
     }
 
     /**
-     * Evet with the earliest time is smaller, if times are equal,
+     * Event with the earliest time is smaller, if times are equal,
      * flight with the smaller code is smaller
      *
      * @param o the object to be compared.

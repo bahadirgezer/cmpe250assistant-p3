@@ -11,17 +11,12 @@ import java.util.logging.Logger;
 
 public class Project3 {
 
-    public static Logger logger = Logger.getLogger(Project3.class.getName());
-
-    /**
-     * @key - ACC code
-     * @value - ACC object
-     */
+    public static Boolean DEBUG = true;
     public static HashMap<String, ACC> accs;
-
     public static ArrayDeque<Flight> flights;
 
     public static void main(String[] args) { // discrete event simulation project.
+        Long tic = System.currentTimeMillis();
 
         /* Input */
         BufferedReader br = null;
@@ -115,11 +110,9 @@ public class Project3 {
         DES simulation = new DES();
         simulation.run();
         StringBuilder sb = new StringBuilder();
-        for (ACC acc : accs.values()) {
+        for (ACC acc : accs.values())
             sb.append(acc.toString())
                     .append(System.lineSeparator());
-        }
-
         /* End of Process */
 
         /* Output */
@@ -149,5 +142,9 @@ public class Project3 {
             System.exit(1);
         }
         /* End of Output */
+
+        Long toc = System.currentTimeMillis();
+        if (DEBUG)
+            System.out.println("Elapsed time: " + (toc - tic) + " ms");
     }
 }

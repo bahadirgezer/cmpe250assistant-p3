@@ -1,9 +1,5 @@
 package main.java.processors;
 
-/**
- * @class ATC - Air Traffic Controller
- *
- */
 public class ATC {
 
     private Integer time;
