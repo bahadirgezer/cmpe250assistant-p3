@@ -22,7 +22,7 @@ public class Event implements Comparable<Event> {
         int start, runTime, end, opTime;
         String atcCode;
         switch (flight.getOperationCount()) {
-            case 21, 19, 11, 9, 1 -> { // ACC -Running
+            case 21, 19, 11, 9, 1 -> { // ACC - Running
                 start = max(time, acc.getTime());
                 opTime = flight.getTime();
                 runTime = min(opTime, TIME_QUANTUM);

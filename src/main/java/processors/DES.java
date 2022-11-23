@@ -17,11 +17,11 @@ public class DES {
         eventQueue = new PriorityQueue<>();
         while (!flights.isEmpty())
             addFlight(flights.poll());
-
     }
 
     private void addFlight(Flight flight) {
-        eventQueue.add(new Event(flight.getEntryTime(), flight));
+        Event event = new Event(flight.getEntryTime(), flight);
+        eventQueue.add(event);
     }
 
     public void run() {

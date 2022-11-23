@@ -30,4 +30,3 @@ if __name__ == "__main__":
         for line in p.stdout:
             print(line.decode("utf-8").strip())
         print("")
-        # subprocess.run(["java", "-jar", JAR_PATH, input_path, output_path], stdout=subprocess.PIPE, shell=True)
