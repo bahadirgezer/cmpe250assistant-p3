@@ -29,6 +29,7 @@ public class Event implements Comparable<Event> {
                 end = start + runTime;
                 acc.setTime(end);
                 flight.setTime(opTime - runTime);
+                flight.setPriority(opTime - runTime);
                 return new Event(end, flight);
             }
             case 20, 17, 15, 13, 10, 7, 5, 3 -> { // Waiting
@@ -73,7 +74,7 @@ public class Event implements Comparable<Event> {
     @Override
     public int compareTo(Event o) {
         return time.equals(o.time) ?
-                flight.getCode().compareTo(o.flight.getCode()) :
+                flight.compareTo(o.flight) :
                 time.compareTo(o.time);
     }
 }

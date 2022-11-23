@@ -6,13 +6,14 @@ import java.util.AbstractMap;
 import java.util.ArrayDeque;
 import java.util.Map;
 
-public class Flight {
+public class Flight implements Comparable<Flight> {
 
     private final String code;
     private final Integer entry;
     private final String accCode;
     private final String departure;
     private final String arrival;
+    private Boolean priority;
 
     /**
      * <b>size -> State</b> <br>
@@ -53,6 +54,7 @@ public class Flight {
         this.arrival = destination;
         this.operationTimes = operationTimes;
         this.entry = admissionTime;
+        this.priority = Boolean.TRUE;
     }
 
     public String getCode() {
@@ -86,5 +88,23 @@ public class Flight {
     public void setTime(int time) {
         if (time > 0)
             operationTimes.push(time);
+    }
+
+    public void setPriority(int i) {
+        if (i > 0)
+            priority = Boolean.FALSE;
+        else
+            priority = Boolean.TRUE;
+    }
+    // if priority is true, then the flight is prioritized. If the same, check the flight code.
+
+    @Override
+    public int compareTo(Flight flight) {
+        if (this.priority && !flight.priority)
+            return -1;
+        else if (!this.priority && flight.priority)
+            return 1;
+        else
+            return this.code.compareTo(flight.code);
     }
 }
