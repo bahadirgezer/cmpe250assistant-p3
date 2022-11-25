@@ -109,10 +109,6 @@ public class Project3 {
         /* Process */
         DES simulation = new DES();
         simulation.run();
-        StringBuilder sb = new StringBuilder();
-        for (ACC acc : accs.values())
-            sb.append(acc.toString())
-                    .append(System.lineSeparator());
         /* End of Process */
 
         /* Output */
@@ -128,6 +124,10 @@ public class Project3 {
             System.exit(1);
         }
 
+        StringBuilder sb = new StringBuilder();
+        for (ACC acc : accs.values())
+            sb.append(acc.toString())
+                    .append(System.lineSeparator());
         try {
             bw.write(sb.toString());
         } catch (IOException e) {
@@ -139,6 +139,34 @@ public class Project3 {
             bw.close();
         } catch (IOException e) {
             System.err.println("Exception caught: Output file could not be closed.");
+            System.exit(1);
+        }
+        /* End of Output */
+
+        /* Output */
+        BufferedWriter bwlog = null;
+        try {
+            bwlog = new BufferedWriter(
+                    new FileWriter(args[2]));
+        } catch (IOException e) {
+            System.err.println("Exception caught: Log file could not be opened.");
+            System.exit(1);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Exception caught: Log file path must be provided.");
+            System.exit(1);
+        }
+
+        try {
+            bwlog.write(simulation.getLog());
+        } catch (IOException e) {
+            System.err.println("Exception caught: Log file could not be written.");
+            System.exit(1);
+        }
+
+        try {
+            bwlog.close();
+        } catch (IOException e) {
+            System.err.println("Exception caught: Log file could not be closed.");
             System.exit(1);
         }
         /* End of Output */

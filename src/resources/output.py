@@ -3,7 +3,7 @@
 import os
 from subprocess import Popen, PIPE, STDOUT
 
-OUTPUT_DIRECTORY = "p_outputs"
+OUTPUT_DIRECTORY = "outputs"
 INPUT_DIRECTORY = "inputs"
 OUTPUT_EXTENSION = "out"
 JAR_PATH = "../../out/artifacts/CMPE250_p3_jar/CMPE250_p3.jar"

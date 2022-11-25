@@ -16,6 +16,7 @@
       <excludeFolder url="file://$MODULE_DIR$/.idea/inspectionProfiles" />
       <excludeFolder url="file://$MODULE_DIR$/src/resources/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/src/resources/p_outputs" />
+      <excludeFolder url="file://$MODULE_DIR$/src/resources/logs" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

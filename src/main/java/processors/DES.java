@@ -13,8 +13,11 @@ public class DES {
     public final static int TIME_QUANTUM = 30;
     private static PriorityQueue<Event> eventQueue;
 
+    public static StringBuilder log;
+
     public DES() {
         eventQueue = new PriorityQueue<>();
+        log = new StringBuilder();
         while (!flights.isEmpty())
             addFlight(flights.poll());
     }
@@ -31,5 +34,9 @@ public class DES {
             if (nextEvent != null)
                 eventQueue.add(nextEvent);
         }
+    }
+
+    public String getLog() {
+        return log.toString();
     }
 }

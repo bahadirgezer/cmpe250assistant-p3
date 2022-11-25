@@ -85,6 +85,10 @@ public class Flight implements Comparable<Flight> {
         return operationTimes.pop();
     }
 
+    public Integer peekTime() {
+        return operationTimes.peek();
+    }
+
     public void setTime(int time) {
         if (time > 0)
             operationTimes.push(time);
@@ -96,7 +100,19 @@ public class Flight implements Comparable<Flight> {
         else
             priority = Boolean.TRUE;
     }
-    // if priority is true, then the flight is prioritized. If the same, check the flight code.
+
+    public String operationName() {
+        return code + " | " + switch (operationTimes.size()) {
+            case 21, 19, 1, 9, 11 -> accCode + " Running";
+            case 20, 10 -> accCode + " Waiting";
+            case 18, 16, 14, 12 -> departure + " Running";
+            case 17, 13, 15 -> departure + " Waiting";
+            case 8, 2, 4, 6 -> arrival + " Running";
+            case 7, 3, 5 -> arrival + " Waiting";
+            case 0 -> "Finished";
+            default -> "Error";
+        };
+    }
 
     @Override
     public int compareTo(Flight flight) {
