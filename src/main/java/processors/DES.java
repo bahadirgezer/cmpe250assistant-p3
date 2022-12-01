@@ -7,12 +7,12 @@ import main.java.entities.Flight;
 import java.util.PriorityQueue;
 
 import static main.java.Project3.flights;
+import static main.java.Project3.DEBUG;
 
 public class DES {
 
     public final static int TIME_QUANTUM = 30;
     private static PriorityQueue<Event> eventQueue;
-
     public static StringBuilder log;
 
     public DES() {
@@ -37,6 +37,6 @@ public class DES {
     }
 
     public String getLog() {
-        return log.toString();
+        return DEBUG ? log.toString() : "";
     }
 }

@@ -8,6 +8,8 @@ import static main.java.Project3.accs;
 import static main.java.processors.DES.TIME_QUANTUM;
 import static main.java.processors.DES.log;
 
+import static main.java.Project3.DEBUG;
+
 public class Event implements Comparable<Event> {
 
     private final Integer time;
@@ -78,10 +80,11 @@ public class Event implements Comparable<Event> {
     }
 
     public void log(int time, int start, int opTime, String flightLog) {
-        log.append(time).append(" | ")
-                .append(start).append(" | ")
-                .append(flightLog).append(" | ")
-                .append(opTime).append(System.lineSeparator());
+        if (DEBUG)
+            log.append(time).append(" | ")
+                    .append(start).append(" | ")
+                    .append(flightLog).append(" | ")
+                    .append(opTime).append(System.lineSeparator());
     }
 
     /**
