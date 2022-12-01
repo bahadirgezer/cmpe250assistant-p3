@@ -7,11 +7,10 @@ import main.java.processors.DES;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class Project3 {
 
-    public static Boolean DEBUG = true;
+    public static Boolean DEBUG = false;
     public static HashMap<String, ACC> accs;
     public static ArrayDeque<Flight> flights;
 
@@ -143,33 +142,35 @@ public class Project3 {
         }
         /* End of Output */
 
-        /* Output */
-        BufferedWriter bwlog = null;
-        try {
-            bwlog = new BufferedWriter(
-                    new FileWriter(args[2]));
-        } catch (IOException e) {
-            System.err.println("Exception caught: Log file could not be opened.");
-            System.exit(1);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.err.println("Exception caught: Log file path must be provided.");
-            System.exit(1);
-        }
+        /* Log */
+        if (DEBUG) {
+            BufferedWriter bwlog = null;
+            try {
+                bwlog = new BufferedWriter(
+                        new FileWriter(args[2]));
+            } catch (IOException e) {
+                System.err.println("Exception caught: Log file could not be opened.");
+                System.exit(1);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.err.println("Exception caught: Log file path must be provided.");
+                System.exit(1);
+            }
 
-        try {
-            bwlog.write(simulation.getLog());
-        } catch (IOException e) {
-            System.err.println("Exception caught: Log file could not be written.");
-            System.exit(1);
-        }
+            try {
+                bwlog.write(simulation.getLog());
+            } catch (IOException e) {
+                System.err.println("Exception caught: Log file could not be written.");
+                System.exit(1);
+            }
 
-        try {
-            bwlog.close();
-        } catch (IOException e) {
-            System.err.println("Exception caught: Log file could not be closed.");
-            System.exit(1);
+            try {
+                bwlog.close();
+            } catch (IOException e) {
+                System.err.println("Exception caught: Log file could not be closed.");
+                System.exit(1);
+            }
         }
-        /* End of Output */
+        /* End of Log */
 
         Long toc = System.currentTimeMillis();
         if (DEBUG)
