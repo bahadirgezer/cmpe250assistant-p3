@@ -3,10 +3,10 @@ import random
 import threading
 from time import time
 
-DESTINATION_DIRECTORY = "inputs"
+DESTINATION_DIRECTORY = "grading/inputs"
 INPUT_NAME = "case"
 INPUT_EXTENSION = "in"
-AIRPORTS_PER_ACC = 10
+AIRPORTS_PER_ACC = 900
 
 
 class ACC:
@@ -92,11 +92,18 @@ class Input:
         # create flights
         lock = threading.Lock()
         threads = []
+        flights_per_thread = 10000
+        num_threads = self.num_flights // flights_per_thread
+        remaining_flights = self.num_flights % flights_per_thread
         # each thread will process 100 flights
         print("Creating flights...")
-        for _ in range(self.num_flights // 10000):
+        for _ in range(num_threads):
             print(_, end=" ")
-            thread = threading.Thread(target=self.create_flights, args=(10000, lock))
+            thread = threading.Thread(target=self.create_flights, args=(flights_per_thread, lock))
+            thread.start()
+            threads.append(thread)
+        if remaining_flights > 0:
+            thread = threading.Thread(target=self.create_flights, args=(remaining_flights, lock))
             thread.start()
             threads.append(thread)
         print("\nWaiting for threads to finish...")
@@ -118,9 +125,10 @@ class Input:
                 if arrival_airport != departure_airport:
                     break
             tic2 = time()
-            admission_time: int = random.randint(0, 30 * self.num_flights)  # 0 - 30 * num_flights
+
+            admission_time: int = random.randint(0, min(30 * self.num_flights, 2147483647 // 2))  # 0 - 30 * num_flights
             # need empirical analysis to determine op_times distribution
-            op_times: list[int] = [random.randint(0, 500) for _ in range(21)]  # 21 op_times per flight
+            op_times: list[int] = [random.randint(1, 500) for _ in range(21)]  # 21 op_times per flight
             tic3 = time()
             flight_code: str = self.flight_codes.pop()
             tic4 = time()
@@ -155,12 +163,13 @@ class Input:
 
 
 if __name__ == "__main__":
-    inn = 18
+    inn = 5
     too = 1
+
     for i in range(inn, inn + too):
         print("generating input ", f"{DESTINATION_DIRECTORY}/{INPUT_NAME}{i}.{INPUT_EXTENSION}")
         file = open(f"{DESTINATION_DIRECTORY}/{INPUT_NAME}{i}.{INPUT_EXTENSION}", "w")
-        inn = Input(1000, 1000000)
+        inn = Input(25, 25000)
         file.write(str(inn))
         file.close()
 

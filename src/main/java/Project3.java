@@ -152,11 +152,11 @@ public class Project3 {
                 System.err.println("Exception caught: Log file could not be opened.");
                 System.exit(1);
             } catch (ArrayIndexOutOfBoundsException e) {
-                System.err.println("Exception caught: Log file path must be provided.");
-                System.exit(1);
+                System.err.println("Exception caught: No log file path not found.");
             }
 
             try {
+                assert bwlog != null;
                 bwlog.write(simulation.getLog());
             } catch (IOException e) {
                 System.err.println("Exception caught: Log file could not be written.");

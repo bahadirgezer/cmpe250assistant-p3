@@ -17,6 +17,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/resources/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/src/resources/p_outputs" />
       <excludeFolder url="file://$MODULE_DIR$/src/resources/logs" />
+      <excludeFolder url="file://$MODULE_DIR$/src/resources/grading" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

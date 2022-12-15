@@ -75,8 +75,6 @@ public class Event implements Comparable<Event> {
             default -> throw new IllegalStateException(
                     "Unexpected value: " + flight.getOperationCount());
         }
-
-
     }
 
     public void log(int time, int start, int opTime, String flightLog) {

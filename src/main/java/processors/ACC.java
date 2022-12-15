@@ -47,10 +47,16 @@ public class ACC {
                 (int)airportCode.charAt(2) * 31 * 31; // ASCII value hash function
         int i = 0;
         val %= 1000;
-        while (table.get(val) != null) { // collision, linear probing
-            val = (val + i) % 1000;
+
+        while (table.get(val) != null) {
+            val = (val + 1) % 1000;
             i++;
+            if (i == 1000) {
+                System.err.println("Exception caught: ATC code could not be generated.");
+                System.exit(1);
+            }
         }
+
         table.set(val, airportCode);
     }
 
